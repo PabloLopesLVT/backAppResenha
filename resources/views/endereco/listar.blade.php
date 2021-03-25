@@ -8,8 +8,10 @@
 
 @section('content')
     <div class="container">
-        <a href="{{ route ('endereco.create')}}" class="btn btn-primary mb-4 ">Cadastrar Endereço</a>
-        <table class="table table-hover">
+        <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
+
+        <a href="{{ route ('endereco.create')}}" class="btn btn-primary mb-4 "><i class="fas fa-user-plus"></i></a>
+        <table class="table table-hover" id="myTable">
             <thead>
                 <tr>
                     <th scope="col">id</th>
@@ -20,6 +22,7 @@
                     <th scope="col">Estado</th>
                     <th scope="col">CEP</th>
                     <th scope="col">Complemento</th>
+                    <th scope="col">Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,6 +37,8 @@
                             <td>{{ $endereco->estado }}</td>
                             <td>{{ $endereco->cep }}</td>
                             <td>{{ $endereco->complemento }}</td>
+                            <td><a href="{{ route('endereco.editar', $endereco->id) }}"><i class="fas fa-user-edit"></i></a>  <a
+                                href="{{ route('endereco.destroy', $endereco->id) }}"><i class="fas fa-user-times"></i></a></td>
                         </tr>
                     @endforeach
                 @endif
@@ -48,7 +53,9 @@
 
 @section('js')
     <script>
-        console.log('Hi!');
+         $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
 
     </script>
 @stop

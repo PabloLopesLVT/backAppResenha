@@ -8,8 +8,9 @@
 
 @section('content')
     <div class="container">
-        <a href="{{ route ('endereco.create')}}" class="btn btn-primary mb-4 ">Cadastrar Endereço</a>
-        <table class="table table-hover">
+        <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
+        <a href="{{ route ('empresa.create')}}" class="btn btn-primary mb-4 "><i class="fas fa-user-plus"></i></a>
+        <table class="table table-hover" id="myTable">
             <thead>
                 <tr>
                     <th scope="col">id</th>
@@ -17,6 +18,7 @@
                     <th scope="col">email</th>
                     <th scope="col">cnpj</th>
                     <th scope="col">Logradouro</th>
+                    <th scope="col">Ações</th>
 
                 </tr>
             </thead>
@@ -24,12 +26,13 @@
                 @if ($empresas)
                     @foreach ($empresas as $empresa)
                         <tr>
-                            <td>{{ $empresa->id }}</td>
+                            <td>{{ $empresa->idempresa }}</td>
                             <td>{{ $empresa->nomeEmpresa }}</td>
                             <td>{{ $empresa->email}}</td>
                             <td>{{ $empresa->cnpj }}</td>
                             <td>{{ $empresa->logradouro }}</td>
-
+                            <td><a href="{{ route('empresa.editar', $empresa->idempresa) }}"><i class="fas fa-user-edit"></i></a>  <a
+                                href="{{ route('empresa.destroy', $empresa->idempresa) }}"><i class="fas fa-user-times"></i></a></td>
                         </tr>
                     @endforeach
                 @endif
@@ -44,7 +47,9 @@
 
 @section('js')
     <script>
-        console.log('Hi!');
 
+$(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
     </script>
 @stop

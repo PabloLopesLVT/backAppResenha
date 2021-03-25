@@ -9,31 +9,32 @@
 @section('content')
 <form method="POST" action={{ route('usuario.store') }}>
         @csrf
+        <input type="hidden" name="id" value="{{ $usuario->id ?? '' }}">
         <div class="container">
             <div class="alert alert-{{$status ?? ''}} ">{{$msg ?? ''}}</div>
             <div class="row">
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="nome">Nome</label>
-                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Rua xx, nº" required>
+                        <input type="text" value="{{ $usuario->nome ?? old('nome') }}" class="form-control" id="nome" name="nome" placeholder="Rua xx, nº" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="sobrenome">Sobrenome</label>
-                        <input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="Rua xx" required>
+                        <input type="text" value="{{ $usuario->sobrenome ?? old('sobrenome') }}" class="form-control" id="sobrenome" name="sobrenome" placeholder="Rua xx" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="usuario@email.com" required>
+                        <input type="email" value="{{ $usuario->email ?? old('email') }}" class="form-control" id="email" name="email" placeholder="usuario@email.com" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="cpf">CPF</label>
-                        <input type="text" class="form-control" id="cpf" name="cpf" placeholder="" required>
+                        <input type="text" value="{{ $usuario->cpf ?? old('cpf') }}" class="form-control" id="cpf" name="cpf" placeholder="" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-2">
@@ -41,8 +42,8 @@
                         <label for="tipo">Tipo</label>
                         <select class="form-control" name="tipo">
                             <option value="" selected>Selecione</option>
-                            <option value="1" selected>Administrador</option>
-                            <option value="2" selected>Cliente</option>
+                            <option value="1" >Administrador</option>
+                            <option value="2" >Cliente</option>
                           </select>
                     </div>
                 </div>
@@ -70,7 +71,7 @@
 
 @section('js')
     <script>
-        console.log('Hi!');
+       $('#cpf').mask('000.000.000-00');
 
     </script>
 @stop

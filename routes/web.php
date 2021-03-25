@@ -38,3 +38,14 @@ Route::get('/listarEndereco', [App\Http\Controllers\EnderecoController::class, '
 Route::get('/listarUsuario', [App\Http\Controllers\UsuarioController::class, 'index'])->name('usuario.index');
 Route::get('/listarEmpresa', [App\Http\Controllers\EmpresaController::class, 'index'])->name('empresa.index');
 
+//Editar
+Route::get('/editarEmpresa/{id}', [App\Http\Controllers\EmpresaController::class, 'editar'])->name('empresa.editar');
+Route::get('/editarUsuario/{id}', [App\Http\Controllers\UsuarioController::class, 'editar'])->name('usuario.editar');
+Route::get('/editarEndereco/{id}', [App\Http\Controllers\EnderecoController::class, 'editar'])->name('endereco.editar');
+
+//Deletar
+
+Route::get('/deletarEmpresa/{id}', [App\Http\Controllers\EmpresaController::class, 'destroy'])->name('empresa.destroy');
+Route::get('/deletarUsuario/{id}', [App\Http\Controllers\UsuarioController::class, 'destroy'])->name('usuario.destroy');
+Route::get('/deletarEndereco/{id}', [App\Http\Controllers\EnderecoController::class, 'destroy'])->name('endereco.destroy');
+

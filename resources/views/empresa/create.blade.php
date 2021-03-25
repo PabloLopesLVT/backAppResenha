@@ -9,33 +9,34 @@
 @section('content')
     <form method="POST" action={{ route('empresa.store') }}>
         @csrf
+        <input type="hidden" name="id" value="{{ $empresa->id ?? '' }}">
         <div class="container">
             <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="nomeEmpresa">Nome da Empresa</label>
-                        <input type="text" class="form-control" id="nomeEmpresa" name="nomeEmpresa" placeholder="Rua xx, nº"
+                        <input type="text" value="{{ $empresa->nomeEmpresa ?? old('nomeEmpresa') }}" class="form-control" id="nomeEmpresa" name="nomeEmpresa" placeholder="Rua xx, nº"
                             required>
                     </div>
                 </div>
                 <div class="col-12 col-md-2">
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="usuario@email.com"
+                        <input type="email" value="{{ $empresa->email ?? old('email') }}" class="form-control" id="email" name="email" placeholder="usuario@email.com"
                             required>
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
                     <div class="form-group">
                         <label for="cnpj">CNPJ</label>
-                        <input type="text" class="form-control" id="cnpj" name="cnpj" placeholder="" required>
+                        <input type="text" value="{{ $empresa->cnpj ?? old('cnpj') }}" class="form-control" id="cnpj" name="cnpj" placeholder="" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-12">
                     <div class="form-group">
                         <label for="endereco">Endereço</label>
-                        <select class="form-control" name="endereco">
+                        <select class="form-control" value="{{ $empresa->endereco  ?? old('endereco') }}" name="endereco">
                             <option value="" selected>Selecione</option>
                             @if ($enderecos)
                                 @foreach ($enderecos as $endereco)
@@ -71,7 +72,6 @@
 
 @section('js')
     <script>
-        console.log('Hi!');
-
+        $('#cnpj').mask('00.000.000/0000-00');
     </script>
 @stop

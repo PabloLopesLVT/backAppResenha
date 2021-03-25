@@ -7,21 +7,24 @@
 @stop
 
 @section('content')
-<form method="POST" action={{ route('endereco.store') }}>
+    <form method="POST" action={{ route('endereco.store') }}>
         @csrf
+        <input type="hidden" name="id" value="{{ $endereco->id ?? '' }}">
         <div class="container">
-            <div class="alert alert-{{$status ?? ''}} ">{{$msg ?? ''}}</div>
+            <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="logradouro">Logradouro</label>
-                        <input type="text" class="form-control" id="logradouro" name="logradouro" placeholder="Rua xx, nº" required>
+                        <input type="text" value="{{ $endereco->logradouro ?? old('logradouro') }}" class="form-control"
+                            id="logradouro" name="logradouro" placeholder="Rua xx, nº" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-2">
                     <div class="form-group">
                         <label for="numero">Nº</label>
-                        <input type="text" class="form-control" id="numero" name="numero" placeholder="Rua xx" required>
+                        <input type="text" value="{{ $endereco->numero ?? old('numero') }}" class="form-control"
+                            id="numero" name="numero" placeholder="Rua xx" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
@@ -61,26 +64,30 @@
                 </div>
                 <div class="col-12 col-md-3">
                     <div class="form-group">
-                        <label for="logradouro">Município</label>
-                        <input type="text" class="form-control" id="municipio" name="municipio" placeholder="" required>
+                        <label for="municipio">Município</label>
+                        <input type="text" value="{{ $endereco->municipio ?? old('municipio') }}" class="form-control"
+                            id="municipio" name="municipio" placeholder="" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
                     <div class="form-group">
-                        <label for="logradouro">Bairro</label>
-                        <input type="text" class="form-control" id="bairro" name="bairro" placeholder="" required>
+                        <label for="bairro">Bairro</label>
+                        <input type="text" value="{{ $endereco->bairro ?? old('bairro') }}" class="form-control"
+                            id="bairro" name="bairro" placeholder="" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-2">
                     <div class="form-group">
                         <label for="cep">CEP</label>
-                        <input type="text" class="form-control" id="cep" name="cep" placeholder="" required>
+                        <input type="text" value="{{ $endereco->cep ?? old('cep') }}" class="form-control" id="cep"
+                            name="cep" placeholder="" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
-                        <label for="cep">Complemento</label>
-                        <input type="text" class="form-control" id="complemento" name="complemento" placeholder="" required>
+                        <label for="complemento">Complemento</label>
+                        <input type="text" value="{{ $endereco->complemento ?? old('complemento') }}" class="form-control"
+                            id="complemento" name="complemento" placeholder="" required>
                     </div>
                 </div>
                 <div class="col-12 ">
@@ -91,14 +98,14 @@
     </form>
 
     @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 @stop
 
 @section('css')
@@ -107,7 +114,7 @@
 
 @section('js')
     <script>
-        console.log('Hi!');
+        $('#cep').mask('00000-000');
 
     </script>
 @stop

@@ -8,8 +8,10 @@
 
 @section('content')
     <div class="container">
-        <a href="{{ route ('usuario.create')}}" class="btn btn-primary mb-4 ">Cadastrar Usuário</a>
-        <table class="table table-hover">
+        <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
+
+        <a href="{{ route ('usuario.create')}}" class="btn btn-primary mb-4 "><i class="fas fa-user-plus"></i></a>
+        <table class="table table-hover" id="myTable">
             <thead>
                 <tr>
                     <th scope="col">id</th>
@@ -18,6 +20,8 @@
                     <th scope="col">E-mail</th>
                     <th scope="col">CPF</th>
                     <th scope="col">Tipo</th>
+                    <th scope="col">Ações</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +34,8 @@
                             <td>{{ $usuario->email }}</td>
                             <td>{{ $usuario->cpf }}</td>
                             <td>{{ $usuario->tipo }}</td>
+                            <td><a href="{{ route('usuario.editar', $usuario->id) }}"><i class="fas fa-user-edit"></i></a>  <a
+                                href="{{ route('usuario.destroy', $usuario->id) }}"><i class="fas fa-user-times"></i></a></td>
                         </tr>
                     @endforeach
                 @endif
@@ -44,7 +50,9 @@
 
 @section('js')
     <script>
-        console.log('Hi!');
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
 
     </script>
 @stop
