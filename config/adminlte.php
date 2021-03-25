@@ -45,12 +45,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-    'logo_img_class' => 'brand-image img-circle elevation-3',
+    'logo' => 'App Resenha',
+    'logo_img' => '../img/logo.png',
+    'logo_img_class' => 'brand-image img-circle ',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'AdminLTE',
+    'logo_img_alt' => 'App Resenha',
 
     /*
     |--------------------------------------------------------------------------
@@ -65,9 +65,9 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => false,
-    'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => false,
+    'usermenu_header' => true,
+    'usermenu_header_class' => 'bg-warning',
+    'usermenu_image' => true,
     'usermenu_desc' => false,
     'usermenu_profile_url' => false,
 
@@ -224,10 +224,20 @@ return [
     */
 
     'menu' => [
+
         [
-            'text' => 'search',
+            'text' => 'Pesquisa',
             'search' => true,
             'topnav' => true,
+
+        ],
+        [
+            'text' => '',
+            'icon' => 'fas fa-bell',
+            'url' => '#',
+            'label' => 1,
+            'topnav' => true,
+
         ],
         [
             'text' => 'blog',
@@ -235,34 +245,87 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        [
-            'text'        => 'Endereços',
-            'url'         => 'listarEndereco',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        [
-            'text'        => 'Usuarios',
-            'url'         => 'listarUsuario',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
+            'text'        => 'Dashboard',
+            'url'         => 'dashboard',
+            'icon'        => 'fas fa-chart-pie',
+            'label'       => null,
             'label_color' => 'success',
         ],
         [
             'text'        => 'Empresas',
             'url'         => 'listarEmpresa',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
+            'icon'        => 'far fa-building',
+            'label'       => null,
             'label_color' => 'success',
         ],
-        ['header' => 'account_settings'],
+        [
+            'text'        => 'Produtos',
+            'url'         => 'listarEmpresa',
+            'icon'        => 'fas fa-lightbulb',
+            'label'       => null,
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Financeiro',
+            'url'         => 'listarEmpresa',
+            'icon'        => 'fas fa-users',
+            'label'       => null,
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Usuários',
+            'url'         => 'listarUsuario',
+            'icon'        => 'fas fa-user-tie',
+            'label'       => null,
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Histórico Pedidos',
+            'url'         => 'listarEmpresa',
+            'icon'        => 'fas fa-book',
+            'label'       => null,
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Pedidos Abertos',
+            'url'         => 'listarEmpresa',
+            'icon'        => 'fas fa-book',
+            'label'       => null,
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Atendimento',
+            'url'         => 'listarEmpresa',
+            'icon'        => 'fas fa-book',
+            'label'       => null,
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Endereços',
+            'url'         => 'listarEndereco',
+            'icon'        => 'fas fa-map-marked-alt',
+            'label'       => null,
+            'label_color' => 'success',
+        ],
+        [
+            'header' => 'CONFIGURAÇÕES',
+        ],
+        [
+            'text'        => 'Configurações',
+            'url'         => '',
+            'icon'        => 'far fa-fw fa-file',
+            'label'       => null,
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Sair',
+            'url'         => '',
+            'icon'        => 'far fa-fw fa-file',
+            'label'       => null,
+            'label_color' => 'success',
+        ],
+
+       /* ['header' => 'account_settings'],
         [
             'text' => 'profile',
             'url'  => 'admin/settings',
@@ -326,7 +389,7 @@ return [
             'text'       => 'information',
             'icon_color' => 'cyan',
             'url'        => '#',
-        ],
+        ],*/
     ],
 
     /*
@@ -400,11 +463,11 @@ return [
             ],
         ],
         'Chartjs' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js',
                 ],
             ],
@@ -419,6 +482,16 @@ return [
                 ],
             ],
         ],
+        'Fonte-Mulish' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'https://fonts.googleapis.com/css?family=Mulish',
+                ],
+            ],
+        ],
         'JqueryMask' => [
             'active' => true,
             'files' => [
@@ -429,6 +502,7 @@ return [
                 ],
             ],
         ],
+
 
         'Pace' => [
             'active' => false,

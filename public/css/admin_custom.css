@@ -5,3 +5,37 @@
 .fa-user-edit {
   color: #38c172;
 }
+
+body {
+  font-family: Mulish;
+}
+
+legend {
+  color: darkgrey;
+  font-size: 0.7rem;
+}
+
+.table {
+  margin-bottom: 0rem !important;
+}
+
+.td-reclamacao {
+  padding-top: 0.2rem !important;
+  padding-bottom: 0.2rem !important;
+  font-size: 0.9rem;
+}
+
+.td-ult-pedidos {
+  font-size: 0.9rem;
+  padding-top: 0.88rem !important;
+  padding-bottom: 0.8rem !important;
+}
+
+.caixa-superior:hover {
+  color: #3751FF;
+  box-shadow: inset 0 0 0.1rem #3751FF;
+}
+
+.coluna-hora-valor {
+  color: darkgrey;
+}
