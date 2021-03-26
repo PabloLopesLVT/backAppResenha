@@ -35,3 +35,10 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('/logout', [LoginController::class, 'logout']);
 
 });
+
+
+//Store
+Route::post('/storeUsuario', [App\Http\Controllers\api\UsuarioApiController::class, 'store']);
+
+//Deletar
+Route::get('/destroyUsuario/{id}', [App\Http\Controllers\api\UsuarioApiController::class, 'destroy']);

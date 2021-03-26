@@ -13,15 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
 
 Auth::routes();
-
+Route::group(['middleware' => 'auth:web'], function(){
+    Route::get('/', function () {
+        return view('dashboard');
+    });
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
@@ -52,3 +53,4 @@ Route::get('/deletarEmpresa/{id}', [App\Http\Controllers\EmpresaController::clas
 Route::get('/deletarUsuario/{id}', [App\Http\Controllers\UsuarioController::class, 'destroy'])->name('usuario.destroy');
 Route::get('/deletarEndereco/{id}', [App\Http\Controllers\EnderecoController::class, 'destroy'])->name('endereco.destroy');
 
+});

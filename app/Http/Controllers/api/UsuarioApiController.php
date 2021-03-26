@@ -1,57 +1,31 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
-use App\Models\Endereco;
-use App\Models\Usuario;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Usuario;
 
-class UsuarioController extends Controller
+class UsuarioApiController extends Controller
 {
-    public function index(){
-
-        $usuario = new Usuario();
-        $usuarios = $usuario::all();
-
-        return view('usuario.listar', compact('usuarios'));
-
-    }
-    public function create(){
-        $endereco = new Endereco();
-        $enderecos = $endereco::all();
-        return view('usuario.create', compact('enderecos'));
-    }
-
     public function store(Request $request){
 
-        $endereco = new Endereco();
-        $enderecos = $endereco::all();
         $usuario = new Usuario();
 
         if ($request->id == '') {
-            $request->validate([
-                'nome' => 'required',
-                'sobrenome' => 'required',
-                'email' => 'required|email|unique:usuarios',
-                'cpf' => 'required|cpf|unique:usuarios',
-                'tipo' => 'required',
-            ]);
+         $this->validate($request, $usuario->rules());
 
             $usuario->nome = $request->input('nome');
             $usuario->sobrenome = $request->input('sobrenome');
             $usuario->email = $request->input('email');
             $usuario->cpf = $request->input('cpf');
             $usuario->tipo = $request->input('tipo');
-            $usuario->endereco_id = $request->input('endereco');
-
+            $usuario->endereco_id = $request->input('endereco_id');
             $salvar  = $usuario->save();
 
             if($salvar){
-                $status = "success";
                 $msg = "Registro salvo com sucesso!";
-            }else{
-                $status = "danger";
-                $msg = "Houve erro ao salvar o registro!";
+                return response()->json(['message' => $msg], 201);
             }
         }else{
 
@@ -71,28 +45,12 @@ class UsuarioController extends Controller
             $usuario->endereco_id = $request->input('endereco_id');
 
             $update  = $usuario->update();
-
+            $msg = "Atualização salva com sucesso!";
             if($update){
-                $status = "success";
-                $msg = "Atualização salva com sucesso!";
-            }else{
-                $status = "danger";
-                $msg = "Houve erro ao salvar o registro!";
+                return response()->json(['message' => $msg], 201);
             }
         }
 
-            return view('usuario.create', compact('enderecos'), ['msg' => $msg, 'status' => $status]);
-
-
-    }
-
-
-    public function editar($id){
-        $usuario = Usuario::find($id);
-        $endereco = new Endereco();
-        $enderecos = $endereco::all();
-
-        return view('usuario.create', compact('enderecos'), ['usuario' => $usuario]);
     }
 
     public function destroy($id)
@@ -107,21 +65,17 @@ class UsuarioController extends Controller
 
             //Tenho que ver pra onde vou mandar o cara quando ele deletar
             $msg = "Você não pode excluir o usuário $usuario->nome porque há registros em dependência desse registro.";
-            $status = "danger";
-            $usuarios = Usuario::get();
-            return view('usuario.listar', ['msg' => $msg, 'status' => $status], compact('usuarios'));
+            return response()->json(['message' => $msg], 404);
 
         }
 
         if($delete){
-            $status = "success";
             $msg = "Deleção realizada com sucesso!";
-        }else{
-            $status = "danger";
-            $msg = "Houve um erro na atualização dos dados!";
+            return response()->json(['message' => $msg], 201);
         }
 
 
         return view('empresa.create',  ['msg' => $msg, 'status' => $status]);
     }
+
 }

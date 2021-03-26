@@ -17,6 +17,18 @@ class Usuario extends Model
         'sobrenome',
         'email',
         'cpf',
-        'tipo'
+        'tipo',
+        'endereco_id',
     ];
+
+    public function rules(){
+        return [
+            'nome' => 'required',
+                'sobrenome' => 'required',
+                'email' => 'required|email|unique:usuarios',
+                'cpf' => 'required|cpf|unique:usuarios',
+                'tipo' => 'required',
+                'endereco_id' => 'required',
+        ];
+    }
 }

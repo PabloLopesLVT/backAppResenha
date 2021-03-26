@@ -47,6 +47,21 @@
                           </select>
                     </div>
                 </div>
+                <div class="col-12 col-md-12">
+                    <div class="form-group">
+                        <label for="endereco">Endereço</label>
+                        <select class="form-control" value="{{ $usuario->endereco  ?? old('endereco') }}" name="endereco">
+                            <option value="" selected>Selecione</option>
+                            @if ($enderecos)
+                                @foreach ($enderecos as $endereco)
+                                    <option value="{{ $endereco->id }}">{{ $endereco->logradouro }},
+                                        {{ $endereco->numero }} - {{ $endereco->estado }} - {{ $endereco->municipio }} -
+                                        {{ $endereco->bairro }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </div>
                 <div class="col-12 ">
                     <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
                 </div>
