@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmpresas extends Migration
+class CreateUsuarios extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,22 @@ class CreateEmpresas extends Migration
      */
     public function up()
     {
-        Schema::create('empresas', function (Blueprint $table) {
+        Schema::create('usuarios', function (Blueprint $table) {
             $table->id();
-            $table->string('nomeEmpresa');
+            $table->string('nome');
+            $table->string('sobrenome');
             $table->string('email')->unique();
-            $table->string('cnpj')->unique();
+            $table->string('cpf')->unique();
+            $table->integer('tipo');
             $table->unsignedBigInteger('endereco_id')->unsigned() ;
-
+            $table->unsignedBigInteger('empresa_id')->unsigned() ;
             $table->timestamps();
-
             //Constrain
             $table->foreign('endereco_id')->references('id')->on('enderecos');
+            $table->foreign('empresa_id')->references('id')->on('empresas');
+
+
+
 
         });
     }
@@ -35,6 +40,6 @@ class CreateEmpresas extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('empresas');
+        Schema::dropIfExists('usuarios');
     }
 }

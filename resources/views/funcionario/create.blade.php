@@ -3,13 +3,13 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Cadastrar Usuários</h1>
+    <h1>Cadastrar Funcionário</h1>
 @stop
 
 @section('content')
-    <form method="POST" action={{ route('usuario.store') }}>
+    <form method="POST" action={{ route('funcionario.store') }}>
         @csrf
-        <input type="hidden" name="id" value="{{ $usuario->id ?? '' }}">
+        <input type="hidden" name="id" value="{{ $funcionario->id ?? '' }}">
         <input type="hidden" name="idendereco" value="{{ $endereco->id ?? '' }}">
         <div class="container-fluid">
             <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
@@ -17,38 +17,52 @@
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="nome">Nome</label>
-                        <input type="text" value="{{ $usuario->nome ?? old('nome') }}" class="form-control" id="nome"
+                        <input type="text" value="{{ $funcionario->nome ?? old('nome') }}" class="form-control" id="nome"
                             name="nome" placeholder="Rua xx, nº" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="sobrenome">Sobrenome</label>
-                        <input type="text" value="{{ $usuario->sobrenome ?? old('sobrenome') }}" class="form-control"
+                        <input type="text" value="{{ $funcionario->sobrenome ?? old('sobrenome') }}" class="form-control"
                             id="sobrenome" name="sobrenome" placeholder="Rua xx" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input type="email" value="{{ $usuario->email ?? old('email') }}" class="form-control" id="email"
-                            name="email" placeholder="usuario@email.com" required>
+                        <input type="email" value="{{ $funcionario->email ?? old('email') }}" class="form-control"
+                            id="email" name="email" placeholder="usuario@email.com" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="cpf">CPF</label>
-                        <input type="text" value="{{ $usuario->cpf ?? old('cpf') }}" class="form-control" id="cpf"
+                        <input type="text" value="{{ $funcionario->cpf ?? old('cpf') }}" class="form-control" id="cpf"
                             name="cpf" placeholder="" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-2">
                     <div class="form-group">
-                        <label for="tipo">Tipo</label>
-                        <select class="form-control" name="tipo">
+                        <label for="funcao">Funções</label>
+                        <select class="form-control" name="funcao">
                             <option value="" selected>Selecione</option>
-                            <option value="1">Administrador</option>
-                            <option value="2">Cliente</option>
+                            <option value="1">Entregador</option>
+                            <option value="2">Atendente</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <label for="empresa">Empresa</label>
+                        <select class="form-control" value="{{ $funcionario->empresa_id ?? old('empresa') }}"
+                            name="empresa">
+                            <option value="" selected>Selecione</option>
+                            @if ($empresas)
+                                @foreach ($empresas as $empresa)
+                                    <option value="{{ $empresa->id }}">{{ $empresa->nomeEmpresa }}</option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                 </div>
@@ -140,6 +154,7 @@
         </div>
     </form>
     <div id="wait" style="display:none;width:69px;height:89px;position:absolute;top:50%;left:50%;padding:2px;"><img src='{{ asset('img/loading.gif')}}' width="64" height="64" /><br>Carregando..</div>
+
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -159,6 +174,7 @@
     <script>
         $('#cep').mask('00000-000');
         $('#cpf').mask('000.000.000-00');
+
         $('#cep').blur(function(){
             $.ajax({
                 url: "https://viacep.com.br/ws/"+$('#cep').val()+"/json/",
@@ -173,17 +189,11 @@
                 $('#municipio').val(data.localidade).prop('disabled', false);
                 $('#numero').prop('disabled', false);
 
-
             })
             .fail(function(jqXHR, textStatus, msg) {
                 alert(msg);
             });
         })
-$(document).ajaxStart(function(){
-    $("#wait").css("display", "block");
-  });
-  $(document).ajaxComplete(function(){
-    $("#wait").css("display", "none");
-  });
+
     </script>
 @stop

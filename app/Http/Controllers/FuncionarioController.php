@@ -2,39 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Endereco;
-use App\Models\Usuario;
+use App\Models\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Endereco;
+use App\Models\Funcionario;
 
-class UsuarioController extends Controller
+class FuncionarioController extends Controller
 {
     public function index(){
 
-        $usuario = new Usuario();
-        $usuarios = $usuario::all();
+        $funcionario = new Funcionario();
+        $funcionarios = $funcionario::all();
 
-        return view('usuario.listar', compact('usuarios'));
+        return view('funcionario.listar', compact('funcionarios'));
 
     }
     public function create(){
-
-        return view('usuario.create');
+        $empresa = new Empresa();
+        $empresas = $empresa::all();
+        return view('funcionario.create', compact('empresas'));
     }
 
     public function store(Request $request){
 
         $endereco = new Endereco();
 
-        $usuario = new Usuario();
+        $funcionario = new Funcionario();
 
         if ($request->id == '') {
             $request->validate([
                 'nome' => 'required',
                 'sobrenome' => 'required',
-                'email' => 'required|email|unique:usuarios',
-                'cpf' => 'required|cpf|unique:usuarios',
-                'tipo' => 'required',
+                'email' => 'required|email|unique:funcionarios',
+                'cpf' => 'required|cpf|unique:funcionarios',
+                'funcao' => 'required',
+                'empresa' => 'required'
             ]);
             $endereco->logradouro = $request->input('logradouro');
             $endereco->numero = $request->input('numero');
@@ -50,14 +53,14 @@ class UsuarioController extends Controller
 
             $endereco  = DB::table('enderecos')->orderBy('id', 'desc')->first();
 
-            $usuario->nome = $request->input('nome');
-            $usuario->sobrenome = $request->input('sobrenome');
-            $usuario->email = $request->input('email');
-            $usuario->cpf = $request->input('cpf');
-            $usuario->tipo = $request->input('tipo');
-            $usuario->endereco_id = $endereco->id;
-
-            $salvar  = $usuario->save();
+            $funcionario->nome = $request->input('nome');
+            $funcionario->sobrenome = $request->input('sobrenome');
+            $funcionario->email = $request->input('email');
+            $funcionario->cpf = $request->input('cpf');
+            $funcionario->funcao = $request->input('funcao');
+            $funcionario->endereco_id = $endereco->id;
+            $funcionario->empresa_id = $request->input('empresa');
+            $salvar  = $funcionario->save();
 
             if($salvar){
                 $status = "success";
@@ -74,7 +77,8 @@ class UsuarioController extends Controller
                 'sobrenome' => 'required',
                 'email' => 'required|email',
                 'cpf' => 'required|cpf',
-                'tipo' => 'required',
+                'funcao' => 'required',
+                'empresa' => 'required',
             ]);
             $endereco  = Endereco::find($request->input('idendereco'));
             $endereco->logradouro = $request->input('logradouro');
@@ -87,15 +91,16 @@ class UsuarioController extends Controller
 
             $salvar  = $endereco->save();
 
-            $usuario  = Usuario::find($request->input('id'));
-            $usuario->nome = $request->input('nome');
-            $usuario->sobrenome = $request->input('sobrenome');
-            $usuario->email = $request->input('email');
-            $usuario->cpf = $request->input('cpf');
-            $usuario->tipo = $request->input('tipo');
-            $usuario->endereco_id = $request->input('idendereco');
+            $funcionario  = Funcionario::find($request->input('id'));
+            $funcionario->nome = $request->input('nome');
+            $funcionario->sobrenome = $request->input('sobrenome');
+            $funcionario->email = $request->input('email');
+            $funcionario->cpf = $request->input('cpf');
+            $funcionario->funcao = $request->input('funcao');
+            $funcionario->endereco_id = $request->input('idendereco');
+            $funcionario->empresa_id = $request->input('empresa');
 
-            $update  = $usuario->update();
+            $update  = $funcionario->update();
 
             if($update){
                 $status = "success";
@@ -113,17 +118,18 @@ class UsuarioController extends Controller
 
 
     public function editar($id){
-        $usuario = Usuario::find($id);
+        $funcionario = Funcionario::find($id);
 
-        $endereco = Endereco::find($usuario->endereco_id);
-
-        return view('usuario.create', ['usuario' => $usuario, 'endereco' => $endereco]);
+        $endereco = Endereco::find($funcionario->endereco_id);
+        $empresa = new Empresa();
+        $empresas = $empresa::all();
+        return view('funcionario.create', compact('empresas'), ['funcionario' => $funcionario, 'endereco' => $endereco]);
     }
 
     public function destroy($id)
     {
 
-        $usuario = Usuario::find($id);
+        $usuario = Funcionario::find($id);
 
         try{
             $delete = $usuario->delete();
@@ -133,8 +139,8 @@ class UsuarioController extends Controller
             //Tenho que ver pra onde vou mandar o cara quando ele deletar
             $msg = "Você não pode excluir o usuário $usuario->nome porque há registros em dependência desse registro.";
             $status = "danger";
-            $usuarios = Usuario::get();
-            return view('usuario.listar', ['msg' => $msg, 'status' => $status], compact('usuarios'));
+            $funcionarios = Funcionario::get();
+            return view('funcionario.listar', ['msg' => $msg, 'status' => $status], compact('funcionarios'));
 
         }
 
@@ -145,8 +151,9 @@ class UsuarioController extends Controller
             $status = "danger";
             $msg = "Houve um erro na atualização dos dados!";
         }
+        $empresa = new Empresa();
+        $empresas = $empresa::all();
 
-
-        return view('usuario.create',  ['msg' => $msg, 'status' => $status]);
+        return view('funcionario.create', compact('empresas'),  ['msg' => $msg, 'status' => $status]);
     }
 }

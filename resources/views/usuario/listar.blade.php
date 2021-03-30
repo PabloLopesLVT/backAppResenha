@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
 
         <a href="{{ route ('usuario.create')}}" class="btn btn-primary mb-4 "><i class="fas fa-user-plus"></i></a>
@@ -51,7 +51,7 @@
 @section('js')
     <script>
         $(document).ready( function () {
-            $('#myTable').DataTable();
+            $('#myTable').DataTable({ "language": { "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json" } });
         } );
 
     </script>

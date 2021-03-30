@@ -26,11 +26,9 @@ class EmpresaController extends Controller
 
     public function editar($id){
         $empresa = Empresa::find($id);
+        $endereco = Endereco::find($empresa->endereco_id);
 
-        $endereco = new Endereco();
-        $enderecos = $endereco::all();
-
-        return view('empresa.create', compact('enderecos'), ['empresa' => $empresa]);
+        return view('empresa.create', ['empresa' => $empresa, 'endereco' => $endereco]);
     }
 
     public function store(Request $request){
@@ -47,14 +45,25 @@ class EmpresaController extends Controller
                 'nomeEmpresa' => 'required',
                 'email' => 'required|email|unique:empresas',
                 'cnpj' => 'required|cnpj',
-                'endereco' => 'required',
             ]);
+            $endereco->logradouro = $request->input('logradouro');
+            $endereco->numero = $request->input('numero');
+            $endereco->bairro = $request->input('bairro');
+            $endereco->cep = $request->input('cep');
+            $endereco->municipio = $request->input('municipio');
+            $endereco->estado = $request->input('estado');
+            $endereco->complemento = $request->input('complemento');
 
+            $salvar  = $endereco->save();
+
+            if($salvar){
+
+            $endereco  = DB::table('enderecos')->orderBy('id', 'desc')->first();
             $empresa->nomeEmpresa = $request->input('nomeEmpresa');
             $empresa->email = $request->input('email');
             $empresa->cnpj = $request->input('cnpj');
-            $empresa->endereco_id = $request->input('endereco');
-            $empresa->usuario_id = '1';
+            $empresa->endereco_id = $endereco->id;
+
             $salvar = $empresa->save();
 
             if($salvar){
@@ -64,13 +73,25 @@ class EmpresaController extends Controller
                 $status = "danger";
                 $msg = "Houve erro ao salvar o registro!";
             }
+        }
         }else{
+            $endereco  = Endereco::find($request->input('idendereco'));
+            $endereco->logradouro = $request->input('logradouro');
+            $endereco->numero = $request->input('numero');
+            $endereco->bairro = $request->input('bairro');
+            $endereco->cep = $request->input('cep');
+            $endereco->municipio = $request->input('municipio');
+            $endereco->estado = $request->input('estado');
+            $endereco->complemento = $request->input('complemento');
+
+            $salvar  = $endereco->save();
+
             $empresa  = Empresa::find($request->input('id'));
             $empresa->nomeEmpresa = $request->input('nomeEmpresa');
             $empresa->email = $request->input('email');
             $empresa->cnpj = $request->input('cnpj');
-            $empresa->endereco_id = $request->input('endereco');
-            $empresa->usuario_id = '1';
+            $empresa->endereco_id = $request->input('idendereco');
+
             $update = $empresa->update();
             if($update){
                 $status = "success";
@@ -81,7 +102,7 @@ class EmpresaController extends Controller
             }
      }
 
-        return view('empresa.create',compact('enderecos'), ['msg' => $msg, 'status' => $status]);
+        return view('empresa.create', ['msg' => $msg, 'status' => $status]);
     }
 
     public function destroy($id)
