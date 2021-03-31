@@ -130,7 +130,7 @@
                     <div class="form-group">
                         <label for="complemento">Complemento</label>
                         <input type="text" value="{{ $endereco->complemento ?? old('complemento') }}"
-                            class="form-control" id="complemento" name="complemento" placeholder="" required disabled>
+                            class="form-control" id="complemento" name="complemento" placeholder=""  disabled>
                     </div>
                 </div>
                 <div class="col-12 ">

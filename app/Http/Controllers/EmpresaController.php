@@ -12,7 +12,7 @@ class EmpresaController extends Controller
     public function index(){
         $empresa = new Empresa();
         $empresas = DB::table('empresas AS e')
-        ->select('e.id AS idempresa', 'e.nomeEmpresa', 'e.email', 'e.cnpj', 'enderecos.logradouro')
+        ->select('e.id AS idempresa', 'e.nomeEmpresa', 'e.email', 'e.cnpj', 'enderecos.logradouro', 'enderecos.municipio', 'enderecos.estado')
         ->join('enderecos', 'e.endereco_id', '=', 'enderecos.id')
         ->get();
 
@@ -44,7 +44,7 @@ class EmpresaController extends Controller
             $request->validate([
                 'nomeEmpresa' => 'required',
                 'email' => 'required|email|unique:empresas',
-                'cnpj' => 'required|cnpj',
+                'cnpj' => 'required|cnpj|unique:empresas',
             ]);
             $endereco->logradouro = $request->input('logradouro');
             $endereco->numero = $request->input('numero');

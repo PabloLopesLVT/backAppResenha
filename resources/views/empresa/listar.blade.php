@@ -10,14 +10,14 @@
     <div class="container-fluid">
         <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
         <a href="{{ route ('empresa.create')}}" class="btn btn-primary mb-4 "><i class="fas fa-user-plus"></i></a>
-        <table class="table table-hover" id="myTable">
+        <table class="table table-hover table-striped" id="myTable">
             <thead>
                 <tr>
-                    <th scope="col">id</th>
                     <th scope="col">nomeEmpresa</th>
-                    <th scope="col">email</th>
                     <th scope="col">cnpj</th>
-                    <th scope="col">Logradouro</th>
+                    <th scope="col">email</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Cidade</th>
                     <th scope="col">Ações</th>
 
                 </tr>
@@ -26,11 +26,11 @@
                 @if ($empresas)
                     @foreach ($empresas as $empresa)
                         <tr>
-                            <td>{{ $empresa->idempresa }}</td>
                             <td>{{ $empresa->nomeEmpresa }}</td>
-                            <td>{{ $empresa->email}}</td>
                             <td>{{ $empresa->cnpj }}</td>
-                            <td>{{ $empresa->logradouro }}</td>
+                            <td>{{ $empresa->email}}</td>
+                            <td>{{ $empresa->estado }}</td>
+                            <td>{{ $empresa->municipio}}</td>
                             <td><a href="{{ route('empresa.editar', $empresa->idempresa) }}"><i class="fas fa-user-edit"></i></a>  <a
                                 href="{{ route('empresa.destroy', $empresa->idempresa) }}"><i class="fas fa-user-times"></i></a></td>
                         </tr>
