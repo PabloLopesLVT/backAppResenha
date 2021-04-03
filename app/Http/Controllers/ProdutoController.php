@@ -9,6 +9,21 @@ use Illuminate\Support\Facades\Storage;
 
 class ProdutoController extends Controller
 {
+
+    public function uploadCropImage(Request $request)
+    {
+        $extension = $request->imagem->extension();
+
+                $name = uniqid(date('His'));
+
+                $nameFile = "{$name}.{$extension}";
+                $upload  = Image::make($request->file('imagem'))->resize(200, 200)->save(storage_path("app/public/produtos/$nameFile", 70));
+
+                if(!$upload){
+                    return view('produto.create', ['msg' => "Falha ao fazer upload da imagem", 'status' => 'danger']);
+                }
+    }
+
     public function index(){
         $produto = new Produto();
         $produtos = $produto::all();

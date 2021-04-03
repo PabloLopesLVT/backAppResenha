@@ -19,7 +19,8 @@ class Endereco extends Model
         'municipio',
         'estado',
         'cep',
-        'complemento'
+        'complemento',
+        'observacoes'
     ];
 }
 

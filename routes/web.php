@@ -64,4 +64,10 @@ Route::get('/deletarEndereco/{id}', [App\Http\Controllers\EnderecoController::cl
 Route::get('/deletarFuncionario/{id}', [App\Http\Controllers\FuncionarioController::class, 'destroy'])->name('funcionario.destroy');
 Route::get('/deletarProduto/{id}', [App\Http\Controllers\ProdutoController::class, 'destroy'])->name('produto.destroy');
 
+
+//Crop-imagem
+Route::get('/crop-image-upload', [App\Http\Controllers\ProdutoController::class, 'cropimage']);
+Route::post('/crop-image-upload', [App\Http\Controllers\ProdutoController::class, 'uploadCropImage']);
+
+
 });

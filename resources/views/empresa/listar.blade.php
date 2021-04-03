@@ -3,13 +3,13 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Empresa</h1>
+    <h1>Lista de Empresas</h1>
 @stop
 
 @section('content')
     <div class="container-fluid">
         <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
-        <a href="{{ route ('empresa.create')}}" class="btn btn-primary mb-4 "><i class="fas fa-user-plus"></i></a>
+        <a href="{{ route ('empresa.create')}}" class="btn btn-block btn-primary mb-4 "><i class="far fa-building"> Cadastrar Nova Empresa</i></a>
         <table class="table table-hover table-striped" id="myTable">
             <thead>
                 <tr>

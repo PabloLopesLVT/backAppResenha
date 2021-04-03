@@ -3,14 +3,13 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Cadastrar Produto</h1>
+    <h1>Listar Produtos</h1>
 @stop
 
 @section('content')
     <div class="container-fluid">
         <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
-
-        <a href="{{ route ('produto.create')}}" class="btn btn-primary mb-4 "><i class="fas fa-user-plus"></i></a>
+        <a href="{{ route ('produto.create')}}" class="btn btn-block btn-primary mb-4 "><i class="fas fa-user-plus"></i>Cadastrar Novo Produto</a>
         <table class="table table-hover table-striped" id="myTable">
             <thead>
                 <tr>

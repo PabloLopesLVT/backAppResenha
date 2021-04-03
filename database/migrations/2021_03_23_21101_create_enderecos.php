@@ -21,7 +21,8 @@ class CreateEnderecos extends Migration
             $table->string('bairro');
             $table->string('cep');
             $table->string('estado');
-            $table->string('complemento');
+            $table->string('complemento')->nullable();
+            $table->string('observacoes')->nullable();
             $table->timestamps();
         });
     }

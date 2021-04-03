@@ -16,6 +16,9 @@ class CreateEmpresas extends Migration
         Schema::create('empresas', function (Blueprint $table) {
             $table->id();
             $table->string('nomeEmpresa');
+            $table->string('razaoSocial');
+            $table->string('celular');
+            $table->string('responsavel');
             $table->string('email')->unique();
             $table->string('cnpj')->unique();
             $table->unsignedBigInteger('endereco_id')->unsigned() ;

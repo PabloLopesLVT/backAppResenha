@@ -12,7 +12,7 @@ class EmpresaController extends Controller
     public function index(){
         $empresa = new Empresa();
         $empresas = DB::table('empresas AS e')
-        ->select('e.id AS idempresa', 'e.nomeEmpresa', 'e.email', 'e.cnpj', 'enderecos.logradouro', 'enderecos.municipio', 'enderecos.estado')
+        ->select('e.id AS idempresa', 'e.nomeEmpresa', 'e.email', 'e.cnpj','e.responsavel','e.razaoSocial','e.celular', 'enderecos.logradouro', 'enderecos.municipio', 'enderecos.estado')
         ->join('enderecos', 'e.endereco_id', '=', 'enderecos.id')
         ->get();
 
@@ -53,6 +53,7 @@ class EmpresaController extends Controller
             $endereco->municipio = $request->input('municipio');
             $endereco->estado = $request->input('estado');
             $endereco->complemento = $request->input('complemento');
+            $endereco->observacoes = $request->input('observacoes');
 
             $salvar  = $endereco->save();
 
@@ -61,6 +62,9 @@ class EmpresaController extends Controller
             $endereco  = DB::table('enderecos')->orderBy('id', 'desc')->first();
             $empresa->nomeEmpresa = $request->input('nomeEmpresa');
             $empresa->email = $request->input('email');
+            $empresa->celular = $request->input('telefone');
+            $empresa->razaoSocial = $request->input('razaoSocial');
+            $empresa->responsavel = $request->input('responsavel');
             $empresa->cnpj = $request->input('cnpj');
             $empresa->endereco_id = $endereco->id;
 
@@ -83,12 +87,15 @@ class EmpresaController extends Controller
             $endereco->municipio = $request->input('municipio');
             $endereco->estado = $request->input('estado');
             $endereco->complemento = $request->input('complemento');
-
+            $endereco->observacoes = $request->input('observacoes');
             $salvar  = $endereco->save();
 
             $empresa  = Empresa::find($request->input('id'));
             $empresa->nomeEmpresa = $request->input('nomeEmpresa');
             $empresa->email = $request->input('email');
+            $empresa->celular = $request->input('telefone');
+            $empresa->razaoSocial = $request->input('razaoSocial');
+            $empresa->responsavel = $request->input('responsavel');
             $empresa->cnpj = $request->input('cnpj');
             $empresa->endereco_id = $request->input('idendereco');
 
