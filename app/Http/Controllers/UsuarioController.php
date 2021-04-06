@@ -13,7 +13,7 @@ class UsuarioController extends Controller
 
         $usuario = new Usuario();
         $usuarios = $usuario::all();
-
+        $endereco = Endereco::find($usuario->endereco_id);
         return view('usuario.listar', compact('usuarios'));
 
     }
@@ -43,6 +43,7 @@ class UsuarioController extends Controller
             $endereco->municipio = $request->input('municipio');
             $endereco->estado = $request->input('estado');
             $endereco->complemento = $request->input('complemento');
+            $endereco->observacoes = $request->input('observacoes');
 
             $salvar  = $endereco->save();
 
@@ -84,6 +85,7 @@ class UsuarioController extends Controller
             $endereco->municipio = $request->input('municipio');
             $endereco->estado = $request->input('estado');
             $endereco->complemento = $request->input('complemento');
+            $endereco->observacoes = $request->input('observacoes');
 
             $salvar  = $endereco->save();
 

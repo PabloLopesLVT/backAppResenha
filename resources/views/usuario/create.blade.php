@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Cadastrar Usuários</h1>
+    <div class="rounded bg-warning font-weight-bold mb-4 p-2 h5">Cadastro de Usuários</div>
 @stop
 
 @section('content')
@@ -13,7 +13,8 @@
         <input type="hidden" name="idendereco" value="{{ $endereco->id ?? '' }}">
         <div class="container-fluid">
             <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
-            <div class="row">
+            <div class="row shadow p-3 mb-5 bg-white rounded">
+                <div class="font-weight-bold mb-4 p-2 h5 col-12">Dados do Usuário</div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="nome">Nome</label>
@@ -53,8 +54,8 @@
                     </div>
                 </div>
             </div>
-            <div class="rounded bg-warning font-weight-bold mb-4 p-2 h5">Endereço</div>
-            <div class="row">
+            <div class="row shadow p-3 mb-5 bg-white rounded">
+                <div class="col-12  font-weight-bold mb-4 p-2 h5">Endereço do Usuário</div>
                 <div class="col-12 col-md-2">
                     <div class="form-group">
                         <label for="cep">CEP</label>
@@ -66,21 +67,21 @@
                     <div class="form-group">
                         <label for="logradouro">Logradouro</label>
                         <input type="text" value="{{ $endereco->logradouro ?? old('logradouro') }}" class="form-control"
-                            id="logradouro" name="logradouro" placeholder="Rua xx, nº" required disabled>
+                            id="logradouro" name="logradouro" placeholder="Rua xx, nº" required >
                     </div>
                 </div>
                 <div class="col-12 col-md-2">
                     <div class="form-group">
                         <label for="numero">Nº</label>
                         <input type="text" value="{{ $endereco->numero ?? old('numero') }}" class="form-control"
-                            id="numero" name="numero" placeholder="Rua xx" required disabled>
+                            id="numero" name="numero" placeholder="Rua xx" required >
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="estado">Estado</label>
-                        <select class="form-control" name="estado" id="estado" required disabled>
-                            <option selected value="">Selecione</option>
+                        <select class="form-control"  name="estado" id="estado" required >
+                            <option selected value="{{ $endereco->estado ?? old('estado') }}">{{ $endereco->estado ?? 'Selecione' }}</option>
                             <option value="AC">Acre</option>
                             <option value="AL">Alagoas</option>
                             <option value="AP">Amapá</option>
@@ -115,14 +116,14 @@
                     <div class="form-group">
                         <label for="municipio">Município</label>
                         <input type="text" value="{{ $endereco->municipio ?? old('municipio') }}" class="form-control"
-                            id="municipio" name="municipio" placeholder="" required disabled>
+                            id="municipio" name="municipio" placeholder="" required >
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
                     <div class="form-group">
                         <label for="bairro">Bairro</label>
                         <input type="text" value="{{ $endereco->bairro ?? old('bairro') }}" class="form-control"
-                            id="bairro" name="bairro" placeholder="" required disabled>
+                            id="bairro" name="bairro" placeholder="" required >
                     </div>
                 </div>
 
@@ -130,11 +131,17 @@
                     <div class="form-group">
                         <label for="complemento">Complemento</label>
                         <input type="text" value="{{ $endereco->complemento ?? old('complemento') }}"
-                            class="form-control" id="complemento" name="complemento" placeholder=""  disabled>
+                            class="form-control" id="complemento" name="complemento" placeholder=""  >
                     </div>
                 </div>
                 <div class="col-12 ">
-                    <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+                    <div class="form-group">
+                        <label for="observacoes">Observações</label>
+                        <textarea class="form-control"   id="observacoes" name="observacoes" rows="3" placeholder="Digite observações se necessário.">{{ $endereco->observacoes ?? old('observacoes') }}</textarea>
+                    </div>
+                </div>
+                <div class="col-12 ">
+                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-plus"></i> Cadastrar</button>
                 </div>
             </div>
         </div>
@@ -166,12 +173,11 @@
             })
             .done(function(data) {
                 console.log(data);
-                $('#logradouro').val(data.logradouro).prop('disabled', false);
-                $('#bairro').val(data.bairro).prop('disabled', false);
-                $('#estado').val(data.uf).prop('disabled', false);
-                $('#complemento').val(data.complemento).prop('disabled', false);
-                $('#municipio').val(data.localidade).prop('disabled', false);
-                $('#numero').prop('disabled', false);
+                $('#logradouro').val(data.logradouro);
+                $('#bairro').val(data.bairro);
+                $('#estado').val(data.uf);
+                $('#complemento').val(data.complemento);
+                $('#municipio').val(data.localidade);
 
 
             })

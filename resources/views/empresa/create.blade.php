@@ -46,7 +46,7 @@
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
-                        <input type="text" value="{{ $empresa->telefone ?? old('telefone') }}" class="form-control"
+                        <input type="text" value="{{ $empresa->celular ?? old('celular') }}" class="form-control"
                             id="telefone" name="telefone" placeholder="(00) 9 0000-0000" required>
                     </div>
                 </div>
@@ -74,20 +74,20 @@
                     <div class="form-group">
                         <label for="logradouro">Logradouro</label>
                         <input type="text" value="{{ $endereco->logradouro ?? old('logradouro') }}" class="form-control"
-                            id="logradouro" name="logradouro" placeholder="Informe a rua, av, alameda etc" required disabled>
+                            id="logradouro" name="logradouro" placeholder="Informe a rua, av, alameda etc" required >
                     </div>
                 </div>
                 <div class="col-12 col-md-2">
                     <div class="form-group">
                         <label for="numero">Nº</label>
                         <input type="text" value="{{ $endereco->numero ?? old('numero') }}" class="form-control"
-                            id="numero" name="numero" placeholder="120" required disabled>
+                            id="numero" name="numero" placeholder="120" required >
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="estado">Estado</label>
-                        <select class="form-control" name="estado" id="estado" required disabled>
+                        <select class="form-control"  name="estado" id="estado" required >
                             <option selected value="">Selecione</option>
                             <option value="AC">Acre</option>
                             <option value="AL">Alagoas</option>
@@ -123,14 +123,14 @@
                     <div class="form-group">
                         <label for="municipio">Município</label>
                         <input type="text" value="{{ $endereco->municipio ?? old('municipio') }}" class="form-control"
-                            id="municipio" name="municipio" placeholder="Selecione sua cidade" required disabled>
+                            id="municipio" name="municipio" placeholder="Selecione sua cidade" required >
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
                     <div class="form-group">
                         <label for="bairro">Bairro</label>
                         <input type="text" value="{{ $endereco->bairro ?? old('bairro') }}" class="form-control"
-                            id="bairro" name="bairro" placeholder="Digite o bairro" required disabled>
+                            id="bairro" name="bairro" placeholder="Digite o bairro" required >
                     </div>
                 </div>
 
@@ -138,13 +138,13 @@
                     <div class="form-group">
                         <label for="complemento">Complemento</label>
                         <input type="text" value="{{ $endereco->complemento ?? old('complemento') }}"
-                            class="form-control" id="complemento" name="complemento" placeholder="Loja 01"  disabled>
+                            class="form-control" id="complemento" name="complemento" placeholder="Loja 01"  >
                     </div>
                 </div>
                 <div class="col-12 ">
                     <div class="form-group">
-                        <label for="complemento">Observações</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Digite observações se necessário."></textarea>
+                        <label for="observacoes">Observações</label>
+                        <textarea class="form-control"   id="observacoes" name="observacoes" rows="3" placeholder="Digite observações se necessário.">{{ $endereco->observacoes ?? old('observacoes') }}</textarea>
                     </div>
                 </div>
                 <div class="col-12 ">
@@ -183,12 +183,12 @@
             })
             .done(function(data) {
                 console.log(data);
-                $('#logradouro').val(data.logradouro).prop('disabled', false);
-                $('#bairro').val(data.bairro).prop('disabled', false);
-                $('#estado').val(data.uf).prop('disabled', false);
-                $('#complemento').val(data.complemento).prop('disabled', false);
-                $('#municipio').val(data.localidade).prop('disabled', false);
-                $('#numero').prop('disabled', false);
+                $('#logradouro').val(data.logradouro);
+                $('#bairro').val(data.bairro);
+                $('#estado').val(data.uf);
+                $('#complemento').val(data.complemento);
+                $('#municipio').val(data.localidade);
+
 
 
             })

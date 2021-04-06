@@ -9,7 +9,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
-        <a href="{{ route ('funcionario.create')}}" class="btn btn-primary mb-4 "><i class="fas fa-user-plus"></i></a>
+        <a href="{{ route ('funcionario.create')}}" class="btn btn-block btn-primary mb-4 "><i class="fas fa-user-plus"></i> Cadastrar Novo Funcionário</a>
         <table class="table table-hover table-striped" id="myTable">
             <thead>
                 <tr>

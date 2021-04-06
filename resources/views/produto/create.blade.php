@@ -11,15 +11,19 @@
     <form method="POST" action={{ route('produto.store') }} enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="id" value="{{ $produto->id ?? '' }}">
-        <div class="container-fluid">
+        <div class="container-fluid ">
             <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
             <div class="row shadow p-3 mb-5 bg-white rounded">
                 <div class="font-weight-bold mb-4 p-2 h5 col-12">Dados do Produto</div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Enviar imagem do produto</label>
-                        <input type="file" name="image" class="image">
-
+                <div class="col-md-3">
+                    <div class="form-group mx-auto text-center">
+                        <input type="file" id="cropped_image3" class="image">
+                        <img id="cropped_image2" width="200" src="{{ asset('img/Produto-sem-Imagem-por-Enquanto.jpg') }}"
+                            class="image  mx-auto">
+                        <input type="hidden" id="cropped_image4" name="imagem" class="image">
+                        <label for='cropped_image3' class=" mt-3 btn btn-success  text-center"
+                            id="label_seleciona_arquivo">Adicionar
+                            Imagem</label>
                         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
@@ -55,43 +59,43 @@
 
 
 
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="col-12 ">
-                <div class="form-group">
-                    <label for="nome">Nome</label>
-                    <input type="text" value="{{ $produto->nome ?? old('nome') }}" class="form-control" id="nome"
-                        name="nome" placeholder="Nome do Produto" required>
+                    </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="col-12 ">
+                        <div class="form-group">
+                            <label for="nome">Nome</label>
+                            <input type="text" value="{{ $produto->nome ?? old('nome') }}" class="form-control" id="nome"
+                                name="nome" placeholder="Nome do Produto" required>
+                        </div>
+                    </div>
+                    <div class="col-12 ">
+                        <div class="form-group">
+                            <label for="marca">Marca</label>
+                            <input type="text" value="{{ $produto->marca ?? old('marca') }}" class="form-control"
+                                id="marca" name="marca" placeholder="Marca do Produto" required>
+                        </div>
+                    </div>
+                    <div class="col-12 ">
+                        <div class="form-group">
+                            <label for="status">Ativo</label>
+                            <select class="form-control" name="status">
+                                <option value="1">Ativo</option>
+                                <option value="2">Desativado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="col-12 ">
-                <div class="form-group">
-                    <label for="marca">Marca</label>
-                    <input type="text" value="{{ $produto->marca ?? old('marca') }}" class="form-control" id="marca"
-                        name="marca" placeholder="Marca do Produto" required>
-                </div>
+                <button type="submit" class="btn btn-success btn-block"><i class="fas fa-plus"></i> CADASTRAR</button>
             </div>
-            <div class="col-12 ">
-                <div class="form-group">
-                    <label for="status">Ativo</label>
-                    <select class="form-control" name="status">
-                        <option value="1">Ativo</option>
-                        <option value="2">Desativado</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-12 ">
-            <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
-        </div>
-        </div>
+            <div class="">&nbsp;</div>
 
 
         </div>
-        </div>
+
     </form>
 
     <div id="wait" style="display:none;width:69px;height:89px;position:absolute;top:50%;left:50%;padding:2px;"><img
@@ -126,6 +130,20 @@
             max-width: 1000px !important;
         }
 
+        input[type='file'] {
+            display: none
+        }
+
+        .label_seleciona_arquivo {
+            background-color: #3498db;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            margin: 10px;
+            padding: 6px 20px;
+
+        }
+
     </style>
     <link rel="stylesheet" href="/css/admin_custom.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css" />
@@ -136,38 +154,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
 
     <script>
-        $('#cep').mask('00000-000');
-        $('#cpf').mask('000.000.000-00');
-        $('#cep').blur(function() {
-            $.ajax({
-                    url: "https://viacep.com.br/ws/" + $('#cep').val() + "/json/",
-                    dataType: 'json'
-                })
-                .done(function(data) {
-                    console.log(data);
-                    $('#logradouro').val(data.logradouro).prop('disabled', false);
-                    $('#bairro').val(data.bairro).prop('disabled', false);
-                    $('#estado').val(data.uf).prop('disabled', false);
-                    $('#complemento').val(data.complemento).prop('disabled', false);
-                    $('#municipio').val(data.localidade).prop('disabled', false);
-                    $('#numero').prop('disabled', false);
-
-
-                })
-                .fail(function(jqXHR, textStatus, msg) {
-                    alert(msg);
-                });
-        })
-
-        //Loading do AJAX
-        $(document).ajaxStart(function() {
-            $("#wait").css("display", "block");
-        });
-        $(document).ajaxComplete(function() {
-            $("#wait").css("display", "none");
-        });
-
-
         var $modal = $('#modal');
         var image = document.getElementById('image');
         var cropper;
@@ -208,30 +194,30 @@
                 width: 160,
                 height: 160,
             });
-            canvas.toBlob(function(blob) {
-                url = URL.createObjectURL(blob);
-                var reader = new FileReader();
-                reader.readAsDataURL(blob);
-                reader.onloadend = function() {
-                    var base64data = reader.result;
-                    $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        url: "{{ route("produto.create") }}",
-
-                        data: {
-                            '_token': $('meta[name="_token"]').attr('content'),
-                            'image': base64data
-                        },
-                        success: function(data) {
-                            console.log(data);
-                            $modal.modal('hide');
-                            alert("Crop image successfully uploaded");
-                        }
-                    });
-                }
-            });
-        })
+            $("#cropped_image2").attr("src", canvas.toDataURL("image/png"));
+            $("#cropped_image").attr("src", canvas.toDataURL("image/png"));
+            $("#cropped_image4").val(canvas.toDataURL("image/png"));
+            $modal.modal('hide');
+            /*   canvas.toBlob(function(blob) {
+                   url = URL.createObjectURL(blob);
+                   var reader = new FileReader();
+                   reader.readAsDataURL(blob);
+                   reader.onloadend = function() {
+                       var base64data = reader.result;
+                       $.ajax({
+                           type: "POST",
+                           headers: {
+                               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                           },
+                           url: "crop-image-upload",
+                           success: function(data) {
+                               $modal.modal('hide');
+                               alert("Crop image successfully uploaded");
+                           }
+                       });
+                   }
+               })*/
+        });
 
     </script>
 @stop

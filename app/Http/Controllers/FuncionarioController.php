@@ -46,6 +46,7 @@ class FuncionarioController extends Controller
             $endereco->municipio = $request->input('municipio');
             $endereco->estado = $request->input('estado');
             $endereco->complemento = $request->input('complemento');
+            $endereco->observacoes = $request->input('observacoes');
 
             $salvar  = $endereco->save();
 
@@ -88,7 +89,7 @@ class FuncionarioController extends Controller
             $endereco->municipio = $request->input('municipio');
             $endereco->estado = $request->input('estado');
             $endereco->complemento = $request->input('complemento');
-
+            $endereco->observacoes = $request->input('observacoes');
             $salvar  = $endereco->save();
 
             $funcionario  = Funcionario::find($request->input('id'));
@@ -111,7 +112,7 @@ class FuncionarioController extends Controller
             }
         }
 
-            return view('usuario.create', ['msg' => $msg, 'status' => $status]);
+            return view('funcionario.create', ['msg' => $msg, 'status' => $status]);
 
 
     }

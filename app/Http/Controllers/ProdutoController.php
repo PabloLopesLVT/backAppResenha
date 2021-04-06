@@ -10,20 +10,15 @@ use Illuminate\Support\Facades\Storage;
 class ProdutoController extends Controller
 {
 
-    public function uploadCropImage(Request $request)
-    {
-        $extension = $request->imagem->extension();
 
-                $name = uniqid(date('His'));
 
-                $nameFile = "{$name}.{$extension}";
-                $upload  = Image::make($request->file('imagem'))->resize(200, 200)->save(storage_path("app/public/produtos/$nameFile", 70));
+    public function cropimage(){
+        $produto = new Produto();
+        $produtos = $produto::all();
 
-                if(!$upload){
-                    return view('produto.create', ['msg' => "Falha ao fazer upload da imagem", 'status' => 'danger']);
-                }
+        return view('produto.listar', compact('produtos'));
+
     }
-
     public function index(){
         $produto = new Produto();
         $produtos = $produto::all();
@@ -51,7 +46,7 @@ class ProdutoController extends Controller
             $this->validate($request, $produto->rules());
 
 
-            if($request->hasFile('imagem') && $request->file('imagem')->isValid()){
+       /*     if($request->hasFile('imagem') && $request->file('imagem')->isValid()){
                 $extension = $request->imagem->extension();
 
                 $name = uniqid(date('His'));
@@ -63,12 +58,25 @@ class ProdutoController extends Controller
                     return view('produto.create', ['msg' => "Falha ao fazer upload da imagem", 'status' => 'danger']);
                 }
 
-            }
+            }*/
+            $folderPath = storage_path('/app/public/produtos/');
+
+            $image_parts = explode(";base64,", $request->imagem);
+
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            $image_base64 = base64_decode($image_parts[1]);
+
+            $imageName = uniqid() . '.png';
+
+            $imageFullPath = $folderPath.$imageName;
+
+            file_put_contents($imageFullPath, $image_base64);
 
             $produto->nome = $request->input('nome');
             $produto->marca = $request->input('marca');
             $produto->status = $request->input('status');
-            $produto->imagem = $nameFile;
+            $produto->imagem = $imageName;
 
             $salvar  = $produto->save();
 

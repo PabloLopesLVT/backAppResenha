@@ -21,11 +21,10 @@ class CreateUsuarios extends Migration
             $table->string('cpf')->unique();
             $table->integer('tipo');
             $table->unsignedBigInteger('endereco_id')->unsigned() ;
-            $table->unsignedBigInteger('empresa_id')->unsigned() ;
             $table->timestamps();
             //Constrain
             $table->foreign('endereco_id')->references('id')->on('enderecos');
-            $table->foreign('empresa_id')->references('id')->on('empresas');
+
 
 
 
