@@ -14,18 +14,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
+ Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
 Route::get('/teste', [App\Http\Controllers\GatewayPagamentoController::class, 'teste'])->name('g.teste');
 
 Auth::routes();
 Route::group(['middleware' => 'auth:web'], function(){
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
     Route::get('/', function () {
         return view('dashboard');
     });
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 
 //Create
 Route::get('/createEmpresa', [App\Http\Controllers\EmpresaController::class, 'create'])->name('empresa.create');

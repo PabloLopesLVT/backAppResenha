@@ -37,7 +37,7 @@ class EmpresaController extends Controller
         $status = "";
         $msg = "";
         $endereco = new Endereco();
-        dd($request);
+       // dd($request);
 
         if ($request->id == '') {
 
