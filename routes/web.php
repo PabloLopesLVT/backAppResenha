@@ -55,6 +55,7 @@ Route::get('/editarUsuario/{id}', [App\Http\Controllers\UsuarioController::class
 Route::get('/editarEndereco/{id}', [App\Http\Controllers\EnderecoController::class, 'editar'])->name('endereco.editar');
 Route::get('/editarFuncionario/{id}', [App\Http\Controllers\FuncionarioController::class, 'editar'])->name('funcionario.editar');
 Route::get('/editarProduto/{id}', [App\Http\Controllers\ProdutoController::class, 'editar'])->name('produto.editar');
+Route::post('/produto/status/{id}/{status}', [App\Http\Controllers\ProdutoController::class, 'status'])->name('produto.status');
 
 //Deletar
 
@@ -63,8 +64,6 @@ Route::get('/deletarUsuario/{id}', [App\Http\Controllers\UsuarioController::clas
 Route::get('/deletarEndereco/{id}', [App\Http\Controllers\EnderecoController::class, 'destroy'])->name('endereco.destroy');
 Route::get('/deletarFuncionario/{id}', [App\Http\Controllers\FuncionarioController::class, 'destroy'])->name('funcionario.destroy');
 Route::get('/deletarProduto/{id}', [App\Http\Controllers\ProdutoController::class, 'destroy'])->name('produto.destroy');
-
-
 
 
 });

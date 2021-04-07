@@ -10,15 +10,20 @@ use Illuminate\Support\Facades\Storage;
 class ProdutoController extends Controller
 {
 
+    public function status($id, $status){
+        $produto = Produto::find($id);
 
-
-    public function cropimage(){
-        $produto = new Produto();
-        $produtos = $produto::all();
-
-        return view('produto.listar', compact('produtos'));
-
+        $produto->status = $status;
+        $update = $produto->update();
+        if($update){
+            $msg =  "Status Alterado com Sucesso";
+        }else{
+            $msg =  "Status não foi alterado com Sucesso";
+        }
+        return $msg;
     }
+
+
     public function index(){
         $produto = new Produto();
         $produtos = $produto::all();
