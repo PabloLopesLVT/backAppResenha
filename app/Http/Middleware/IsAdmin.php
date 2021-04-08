@@ -17,11 +17,18 @@ class IsAdmin
     public function handle(Request $request, Closure $next)
     {
 
+        if(isset(auth()->user()->is_admin)){
+
+
             if (auth()->user()->is_admin == 1) {
-                return $next($request);
+
             } else {
                 abort(403, 'Acesso não autorizado');
             }
+
+        }else{
+            return $next($request);
+        }
 
     }
 }

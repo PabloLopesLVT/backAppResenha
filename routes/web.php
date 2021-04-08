@@ -22,7 +22,7 @@ Route::get('/teste1', function () {
 Route::get('/teste', [App\Http\Controllers\GatewayPagamentoController::class, 'teste'])->name('g.teste');
 
 Auth::routes();
-Route::group(['middleware' => 'is_admin', 'auth:web' ], function(){
+Route::group(['middleware' => 'auth:web' ], function(){
     Route::get('/dashboard', function () {
         return view('dashboard');
     });

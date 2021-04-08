@@ -48,10 +48,11 @@
 @section('css')
     <link rel="stylesheet" href="/css/admin_custom.css">
     <style>
-        .remove{
-            color:red;
+        .remove {
+            color: red;
         }
-        </style>
+
+    </style>
 @stop
 
 @section('js')
@@ -69,40 +70,54 @@
             nomeEmpresa = $(this).attr('data-nomeempresa')
             Swal.fire({
                 title: '<strong class="remove"> REMOVER EMPRESA </strong>',
-                html:
-                    `<div class="h5"> Você realmente deseja remover a empresa
-                     <strong class=" font-weight-bolder">
-                     ${nomeEmpresa} </strong> </div>`,
+                html: `<div class="h5"> Você realmente deseja remover a empresa
+                                                         <strong class=" text-dark h4 font-weight-bolder">
+                                                         ${nomeEmpresa}? </strong>
+
+                                                         <div class="mt-5">Digite o nome da empresa</div>
+                                                         </div>`,
                 showCancelButton: true,
-                confirmButtonText: `Deletar`,
+                confirmButtonText: 'REMOVER EMPRESA',
+                confirmButtonColor: '#d33',
+
                 input: 'text',
-                inputLabel: 'Password',
                 inputAttributes: {
                     autocapitalize: 'off',
                     autocorrect: 'off'
                 },
             }).then((result) => {
+                console.log(result);
                 /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
+                console.log(result.value === nomeEmpresa)
+                if (result.value === nomeEmpresa) {
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
                     $.ajax({
-                        url: "",
+                        url: '/deletarEmpresa/' + id,
                         type: "get",
                         success: function(response) {
                             console.log(response)
-                            Swal.fire('Saved!', '', 'success')
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Empresa Apagada',
+                                confirmButtonText: 'Ok',
+                            }).then((result) => {
+                                location.reload();
+                            })
                         },
                         error: function(response) {
                             console.error(response)
                             Swal.fire('Error!', '', 'danger')
                         }
                     })
-                } else if (result.isDenied) {
-                    Swal.fire('Changes are not saved', '', 'info')
+                } else if(result.dismiss === "cancel") {
+                    console.log(result.value === "undefined")
+
+                }else if(result.value != nomeEmpresa){
+                    Swal.fire('Nome da empresa incorreto', '', 'error')
                 }
             })
 
