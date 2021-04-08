@@ -252,32 +252,11 @@ return [
             'label_color' => 'success',
         ],
         [
-            'text'        => 'Empresas',
-            'icon'        => 'far fa-building',
-            'submenu'     => [
-                [
-                    'text'        => 'Cadastrar',
-                    'url'         => 'createEmpresa',
-                    'icon'        => 'far fa-building',
-                    'label'       => null,
-                    'label_color' => 'success',
-                ],
-                [
-                'text'        => 'Exibir Todas',
-                'url'         => 'listarEmpresa',
-                'icon'        => 'far fa-building',
-                'label'       => null,
-                'label_color' => 'success',
-            ],
-            [
-                'text'        => 'ProdutosxEmpresas',
-                'url'         => 'listarProdutosEmpresas',
-                'icon'        => 'far fa-building',
-                'label'       => null,
-                'label_color' => 'success',
-
-            ],
-            ]
+        'text'        => 'Empresas',
+        'url'         => 'listarEmpresa',
+        'icon'        => 'far fa-building',
+        'label'       => null,
+        'label_color' => 'success',
         ],
 
         [

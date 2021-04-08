@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/teste1', function () {
+    return "entro no middleware";
+})->middleware('is_admin');
 
  Route::get('/dashboard', function () {
         return view('dashboard');
@@ -20,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/teste', [App\Http\Controllers\GatewayPagamentoController::class, 'teste'])->name('g.teste');
 
 Auth::routes();
-Route::group(['middleware' => 'auth:web'], function(){
+Route::group(['middleware' => 'is_admin', 'auth:web' ], function(){
     Route::get('/dashboard', function () {
         return view('dashboard');
     });

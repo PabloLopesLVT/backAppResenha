@@ -188,9 +188,6 @@
                 $('#estado').val(data.uf);
                 $('#complemento').val(data.complemento);
                 $('#municipio').val(data.localidade);
-
-
-
             })
             .fail(function(jqXHR, textStatus, msg) {
                 alert(msg);
