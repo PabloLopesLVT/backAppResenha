@@ -21,7 +21,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_admin'
+        'is_admin',
+        'id',
+        'sobrenome',
+        'email',
+        'cpf',
+        'funcao',
+        'endereco_id',
+        'empresa_id'
     ];
 
     /**
@@ -47,5 +54,15 @@ class User extends Authenticatable
         return "https://picsum.photos/300/300";
     }
 
+    public function rules(){
+        return [
+            'nome' => 'required',
+                'sobrenome' => 'required',
+                'email' => 'required|email|unique:usuarios',
+                'cpf' => 'required|cpf|unique:usuarios',
+                'funcao' => 'required',
+                'endereco_id' => 'required',
+        ];
+    }
 
 }

@@ -22,13 +22,8 @@ Route::get('/teste1', function () {
 Route::get('/teste', [App\Http\Controllers\GatewayPagamentoController::class, 'teste'])->name('g.teste');
 
 Auth::routes();
-Route::group(['middleware' => 'auth:web' ], function(){
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
-    Route::get('/', function () {
-        return view('dashboard');
-    });
+Route::group(['middleware' => ['auth:web', 'is_admin'] ], function(){
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //Create
@@ -69,5 +64,17 @@ Route::get('/deletarEndereco/{id}', [App\Http\Controllers\EnderecoController::cl
 Route::get('/deletarFuncionario/{id}', [App\Http\Controllers\FuncionarioController::class, 'destroy'])->name('funcionario.destroy');
 Route::get('/deletarProduto/{id}', [App\Http\Controllers\ProdutoController::class, 'destroy'])->name('produto.destroy');
 
+
+});
+
+Route::group(['middleware' => ['auth:web'] ], function(){
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
+    Route::get('/', function () {
+        return view('dashboard');
+    });
+    Route::get('/editarEmpresaUnica', [App\Http\Controllers\EmpresaController::class, 'editarUnica'])->name('empresa.editarUnica');
+    Route::post('/storeEmpresaUnica', [App\Http\Controllers\EmpresaController::class, 'storeUnica'])->name('empresa.storeUnica');
 
 });

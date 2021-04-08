@@ -252,11 +252,20 @@ return [
             'label_color' => 'success',
         ],
         [
+            'text'        => 'Perfil',
+            'url'         => 'editarEmpresaUnica',
+            'icon'        => 'fas fa-building',
+            'label'       => null,
+            'label_color' => 'success',
+            'can' => 'empresa'
+            ],
+        [
         'text'        => 'Empresas',
         'url'         => 'listarEmpresa',
         'icon'        => 'far fa-building',
         'label'       => null,
         'label_color' => 'success',
+        'can' => 'admin'
         ],
 
         [
@@ -272,6 +281,7 @@ return [
             'icon'        => 'fas fa-lightbulb',
             'label'       => null,
             'label_color' => 'success',
+            'can' => 'admin'
         ],
         [
             'text'        => 'Financeiro',
@@ -279,6 +289,7 @@ return [
             'icon'        => 'fas fa-users',
             'label'       => null,
             'label_color' => 'success',
+            'can' => 'admin'
         ],
         [
             'text'        => 'Usuários',
@@ -286,6 +297,7 @@ return [
             'icon'        => 'fas fa-user-tie',
             'label'       => null,
             'label_color' => 'success',
+
         ],
         [
             'text'        => 'Histórico Pedidos',
@@ -293,6 +305,7 @@ return [
             'icon'        => 'fas fa-book',
             'label'       => null,
             'label_color' => 'success',
+
         ],
         [
             'text'        => 'Pedidos Abertos',
@@ -317,6 +330,7 @@ return [
             'icon'        => 'far fa-fw fa-file',
             'label'       => null,
             'label_color' => 'success',
+            'can' => 'admin'
         ],
         [
             'text'        => 'Sair',

@@ -19,9 +19,8 @@ class IsAdmin
 
         if(isset(auth()->user()->is_admin)){
 
-
             if (auth()->user()->is_admin == 1) {
-
+                return $next($request);
             } else {
                 abort(403, 'Acesso não autorizado');
             }

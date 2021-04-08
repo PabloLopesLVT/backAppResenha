@@ -3,114 +3,91 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <div class="rounded bg-warning font-weight-bold mb-4 p-2 h5">Cadastro de Funcionários</div>
+    <div class="rounded bg-warning font-weight-bold mb-4 p-2 h5">Editar Perfil da Empresa</div>
 @stop
 
 @section('content')
-    <form method="POST" action={{ route('funcionario.store') }}>
+    <form method="POST" action={{ route('empresa.storeUnica') }}>
         @csrf
-        <input type="hidden" name="id" value="{{ $funcionario->id ?? '' }}">
+        <input type="hidden" name="id" value="{{ $empresa->id ?? '' }}">
         <input type="hidden" name="idendereco" value="{{ $endereco->id ?? '' }}">
         <div class="container-fluid">
             <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
             <div class="row shadow p-3 mb-5 bg-white rounded">
-                <div class="font-weight-bold mb-4 p-2 h5 col-12">Dados do Funcionário</div>
-
+                <div class="font-weight-bold mb-4 p-2 h5 col-12">Dados da Empresa</div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
-                        <label for="nome">Nome</label>
-                        <input type="text" value="{{ $funcionario->nome ?? old('nome') }}" class="form-control" id="nome"
-                            name="nome" placeholder="Rua xx, nº" required>
+                        <label for="cnpj">CNPJ</label>
+                        <input type="text" value="{{ $empresa->cnpj ?? old('cnpj') }}" class="form-control" id="cnpj"
+                            name="cnpj" placeholder="00.000.000/0001-00" required disabled>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
-                        <label for="sobrenome">Sobrenome</label>
-                        <input type="text" value="{{ $funcionario->sobrenome ?? old('sobrenome') }}" class="form-control"
-                            id="sobrenome" name="sobrenome" placeholder="Rua xx" required>
+                        <label for="razaoSocial">Razão Social</label>
+                        <input type="text" value="{{ $empresa->razaoSocial ?? old('razaoSocial') }}" class="form-control"
+                            id="razaoSocial" name="razaoSocial" placeholder="Razão social da empresa" required disabled>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="form-group">
+                        <label for="nomeEmpresa">Nome da Empresa</label>
+                        <input type="text" value="{{ $empresa->nomeEmpresa ?? old('nomeEmpresa') }}" class="form-control"
+                            id="nomeEmpresa" name="nomeEmpresa" placeholder="Rua xx, nº" required disabled>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="form-group">
+                        <label for="responsavel">Responsável</label>
+                        <input type="text" value="{{ $empresa->responsavel ?? old('responsavel') }}" class="form-control"
+                            id="responsavel" name="responsavel" placeholder="Nome completo do responsável" required disabled>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="text" value="{{ $empresa->celular ?? old('celular') }}" class="form-control"
+                            id="telefone" name="telefone" placeholder="(00) 9 0000-0000" required disabled>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input type="email" value="{{ $funcionario->email ?? old('email') }}" class="form-control"
-                            id="email" name="email" placeholder="usuario@email.com" required>
+                        <input type="email" value="{{ $empresa->email ?? old('email') }}" class="form-control" id="email"
+                            name="email" placeholder="usuario@email.com" required disabled>
                     </div>
                 </div>
-                <div class="col-12 col-md-2">
-                    <div class="form-group">
-                        <label for="cpf">CPF</label>
-                        <input type="text" value="{{ $funcionario->cpf ?? old('cpf') }}" class="form-control" id="cpf"
-                            name="cpf" placeholder="" required>
-                    </div>
-                </div>
-                <div class="col-12 col-md-3">
-                    <div class="form-group">
-                        <label for="password">Senha</label>
-                        <input type="password" value="{{ $funcionario->password ?? old('password') }}" class="form-control" id="password"
-                            name="password" placeholder="" required>
-                    </div>
-                </div>
-                <div class="col-12 col-md-3">
-                    <div class="form-group">
-                        <label for="passwordC">Confirmação de Senha</label>
-                        <input type="password" value="{{ $funcionario->password ?? old('password') }}" class="form-control" id="passwordC"
-                            name="passwordC" placeholder="" required>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4">
-                    <div class="form-group">
-                        <label for="funcao">Funções</label>
-                        <select class="form-control" name="funcao">
-                            <option value="" selected>Selecione</option>
-                            <option value="1">Entregador</option>
-                            <option value="2">Atendente</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <div class="form-group">
-                        <label for="empresa">Empresa</label>
-                        <select class="form-control" value="{{ $funcionario->empresa_id ?? old('empresa') }}"
-                            name="empresa">
-                            <option value="" selected>Selecione</option>
-                            @if ($empresas)
-                                @foreach ($empresas as $empresa)
-                                    <option value="{{ $empresa->id }}">{{ $empresa->nomeEmpresa }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row shadow p-3 mb-5 bg-white rounded">
-                <div class="col-12  font-weight-bold mb-4 p-2 h5">Endereço do Funcionário</div>
 
+                <small>ATENÇÃO: Os dados de acesso a plataforma serão enviados para o e-mail informado.</small>
+            </div>
+
+            <div class="row shadow p-3 mb-5 bg-white rounded">
+                <div class="col-12  font-weight-bold mb-4 p-2 h5">Endereço da Empresa</div>
                 <div class="col-12 col-md-2">
                     <div class="form-group">
                         <label for="cep">CEP</label>
                         <input type="text" value="{{ $endereco->cep ?? old('cep') }}" class="form-control" id="cep"
-                            name="cep" placeholder="" required>
+                            name="cep" placeholder="00000-000" required disabled>
                     </div>
                 </div>
                 <div class="col-12 col-md-8">
                     <div class="form-group">
                         <label for="logradouro">Logradouro</label>
                         <input type="text" value="{{ $endereco->logradouro ?? old('logradouro') }}" class="form-control"
-                            id="logradouro" name="logradouro" placeholder="Rua xx, nº" required >
+                            id="logradouro" name="logradouro" placeholder="Informe a rua, av, alameda etc" required disabled>
                     </div>
                 </div>
                 <div class="col-12 col-md-2">
                     <div class="form-group">
                         <label for="numero">Nº</label>
                         <input type="text" value="{{ $endereco->numero ?? old('numero') }}" class="form-control"
-                            id="numero" name="numero" placeholder="Rua xx" required >
+                            id="numero" name="numero" placeholder="120" required disabled>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="estado">Estado</label>
-                        <select class="form-control" name="estado" id="estado" required >
+                        <select class="form-control"  name="estado" id="estado" required disabled >
                             <option selected value="">Selecione</option>
                             <option value="AC">Acre</option>
                             <option value="AL">Alagoas</option>
@@ -146,14 +123,14 @@
                     <div class="form-group">
                         <label for="municipio">Município</label>
                         <input type="text" value="{{ $endereco->municipio ?? old('municipio') }}" class="form-control"
-                            id="municipio" name="municipio" placeholder="" required >
+                            id="municipio" name="municipio" placeholder="Selecione sua cidade" required disabled>
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
                     <div class="form-group">
                         <label for="bairro">Bairro</label>
                         <input type="text" value="{{ $endereco->bairro ?? old('bairro') }}" class="form-control"
-                            id="bairro" name="bairro" placeholder="" required >
+                            id="bairro" name="bairro" placeholder="Digite o bairro" required disabled>
                     </div>
                 </div>
 
@@ -161,23 +138,24 @@
                     <div class="form-group">
                         <label for="complemento">Complemento</label>
                         <input type="text" value="{{ $endereco->complemento ?? old('complemento') }}"
-                            class="form-control" id="complemento" name="complemento" placeholder="" >
+                            class="form-control" id="complemento" name="complemento" placeholder="Loja 01"  disabled>
                     </div>
                 </div>
                 <div class="col-12 ">
                     <div class="form-group">
                         <label for="observacoes">Observações</label>
-                        <textarea class="form-control"   id="observacoes" name="observacoes" rows="3" placeholder="Digite observações se necessário.">{{ $endereco->observacoes ?? old('observacoes') }}</textarea>
+                        <textarea class="form-control"   id="observacoes" name="observacoes" rows="3" placeholder="Digite observações se necessário." disabled>{{ $endereco->observacoes ?? old('observacoes') }}</textarea>
                     </div>
                 </div>
                 <div class="col-12 ">
-                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-plus"></i>CADASTRAR</button>
+                    <button type="button" id="btnAlterar" class="btn btn-warning btn-block " ><i class="fas fa-edit"></i>Editar</button>
+                    <button type="submit"  id="btnEditar"  class="btn btn-success btn-block btnEditar d-none" ><i class="fas fa-edit"></i>Editar</button>
                 </div>
             </div>
+
         </div>
     </form>
-    <div id="wait" style="display:none;width:69px;height:89px;position:absolute;top:50%;left:50%;padding:2px;"><img
-            src='{{ asset('img/loading.gif') }}' width="64" height="64" /><br>Carregando..</div>
+    <div id="wait" style="display:none;width:69px;height:89px;position:absolute;top:50%;left:50%;padding:2px;"><img src='{{ asset('img/loading.gif')}}' width="64" height="64" /><br>Carregando..</div>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -196,27 +174,53 @@
 
 @section('js')
     <script>
+        $('#cnpj').mask('00.000.000/0000-00');
         $('#cep').mask('00000-000');
-        $('#cpf').mask('000.000.000-00');
-
-        $('#cep').blur(function() {
+        $('#telefone').mask('(00) 0 0000-0000');
+        $('#cep').blur(function(){
             $.ajax({
-                    url: "https://viacep.com.br/ws/" + $('#cep').val() + "/json/",
-                    dataType: 'json'
-                })
-                .done(function(data) {
-                    console.log(data);
-                    $('#logradouro').val(data.logradouro);
+                url: "https://viacep.com.br/ws/"+$('#cep').val()+"/json/",
+                dataType: 'json'
+            })
+            .done(function(data) {
+                console.log(data);
+                $('#logradouro').val(data.logradouro);
                 $('#bairro').val(data.bairro);
                 $('#estado').val(data.uf);
                 $('#complemento').val(data.complemento);
                 $('#municipio').val(data.localidade);
-
-                })
-                .fail(function(jqXHR, textStatus, msg) {
-                    alert(msg);
-                });
+            })
+            .fail(function(jqXHR, textStatus, msg) {
+                alert(msg);
+            });
         })
+        $(document).ajaxStart(function(){
+    $("#wait").css("display", "block");
+  });
+  $(document).ajaxComplete(function(){
+    $("#wait").css("display", "none");
+  });
 
+  $('#btnAlterar').click(function(){
+    $('#btnAlterar').addClass('d-none');
+    $('#btnEditar').removeClass('d-none');
+
+    $('#cnpj').attr('disabled', false);
+    $('#razaoSocial').attr('disabled', false);
+    $('#nomeEmpresa').attr('disabled', false);
+    $('#responsavel').attr('disabled', false);
+    $('#telefone').attr('disabled', false);
+    $('#email').attr('disabled', false);
+
+    $('#cep').attr('disabled', false);
+    $('#logradouro').attr('disabled', false);
+    $('#numero').attr('disabled', false);
+    $('#estado').attr('disabled', false);
+    $('#municipio').attr('disabled', false);
+    $('#bairro').attr('disabled', false);
+    $('#complemento').attr('disabled', false);
+    $('#observacoes').attr('disabled', false);
+
+  })
     </script>
 @stop

@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Endereco;
 use App\Models\Funcionario;
+use App\Models\User;
 
 class FuncionarioController extends Controller
 {
     public function index(){
 
-        $funcionario = new Funcionario();
+        $funcionario = new User();
         $funcionarios = $funcionario::all();
 
         return view('funcionario.listar', compact('funcionarios'));
@@ -28,14 +29,14 @@ class FuncionarioController extends Controller
 
         $endereco = new Endereco();
 
-        $funcionario = new Funcionario();
+        $funcionario = new User();
 
         if ($request->id == '') {
             $request->validate([
                 'nome' => 'required',
                 'sobrenome' => 'required',
-                'email' => 'required|email|unique:funcionarios',
-                'cpf' => 'required|cpf|unique:funcionarios',
+                'email' => 'required|email|unique:users',
+                'cpf' => 'required|cpf|unique:users',
                 'funcao' => 'required',
                 'empresa' => 'required'
             ]);
@@ -54,13 +55,15 @@ class FuncionarioController extends Controller
 
             $endereco  = DB::table('enderecos')->orderBy('id', 'desc')->first();
 
-            $funcionario->nome = $request->input('nome');
+            $funcionario->name = $request->input('nome');
             $funcionario->sobrenome = $request->input('sobrenome');
             $funcionario->email = $request->input('email');
             $funcionario->cpf = $request->input('cpf');
             $funcionario->funcao = $request->input('funcao');
             $funcionario->endereco_id = $endereco->id;
             $funcionario->empresa_id = $request->input('empresa');
+            $funcionario->password = bcrypt($request->input('password'));
+            $funcionario->is_admin = 0;
             $salvar  = $funcionario->save();
 
             if($salvar){
@@ -90,17 +93,19 @@ class FuncionarioController extends Controller
             $endereco->estado = $request->input('estado');
             $endereco->complemento = $request->input('complemento');
             $endereco->observacoes = $request->input('observacoes');
+
             $salvar  = $endereco->save();
 
-            $funcionario  = Funcionario::find($request->input('id'));
-            $funcionario->nome = $request->input('nome');
+            $funcionario  = User::find($request->input('id'));
+            $funcionario->name = $request->input('nome');
             $funcionario->sobrenome = $request->input('sobrenome');
             $funcionario->email = $request->input('email');
             $funcionario->cpf = $request->input('cpf');
             $funcionario->funcao = $request->input('funcao');
             $funcionario->endereco_id = $request->input('idendereco');
             $funcionario->empresa_id = $request->input('empresa');
-
+            $funcionario->password =  bcrypt($request->input('password'));
+            $funcionario->is_admin = 0;
             $update  = $funcionario->update();
 
             if($update){
@@ -111,15 +116,17 @@ class FuncionarioController extends Controller
                 $msg = "Houve erro ao salvar o registro!";
             }
         }
+        $funcionario = new User();
+        $funcionarios = $funcionario::all();
 
-            return view('funcionario.create', ['msg' => $msg, 'status' => $status]);
+            return view('funcionario.listar', compact('funcionarios'), ['msg' => $msg, 'status' => $status]);
 
 
     }
 
 
     public function editar($id){
-        $funcionario = Funcionario::find($id);
+        $funcionario = User::find($id);
 
         $endereco = Endereco::find($funcionario->endereco_id);
         $empresa = new Empresa();
@@ -130,7 +137,7 @@ class FuncionarioController extends Controller
     public function destroy($id)
     {
 
-        $usuario = Funcionario::find($id);
+        $usuario = User::find($id);
 
         try{
             $delete = $usuario->delete();
@@ -140,7 +147,7 @@ class FuncionarioController extends Controller
             //Tenho que ver pra onde vou mandar o cara quando ele deletar
             $msg = "Você não pode excluir o usuário $usuario->nome porque há registros em dependência desse registro.";
             $status = "danger";
-            $funcionarios = Funcionario::get();
+            $funcionarios = User::get();
             return view('funcionario.listar', ['msg' => $msg, 'status' => $status], compact('funcionarios'));
 
         }
@@ -152,9 +159,9 @@ class FuncionarioController extends Controller
             $status = "danger";
             $msg = "Houve um erro na atualização dos dados!";
         }
-        $empresa = new Empresa();
-        $empresas = $empresa::all();
+        $funcionario = new User();
+        $funcionarios = $funcionario::all();
 
-        return view('funcionario.create', compact('empresas'),  ['msg' => $msg, 'status' => $status]);
+        return view('funcionario.listar', compact('funcionarios'),  ['msg' => $msg, 'status' => $status]);
     }
 }
