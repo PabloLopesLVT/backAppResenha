@@ -258,14 +258,22 @@ return [
             'label'       => null,
             'label_color' => 'success',
             'can' => 'empresa'
-            ],
+        ],
         [
-        'text'        => 'Empresas',
-        'url'         => 'listarEmpresa',
-        'icon'        => 'far fa-building',
-        'label'       => null,
-        'label_color' => 'success',
-        'can' => 'admin'
+            'text'        => 'Meus Produtos',
+            'url'         => 'produtoEmpresa',
+            'icon'        => 'fas fa-lightbulb',
+            'label'       => null,
+            'label_color' => 'success',
+            'can' => 'empresa'
+        ],
+        [
+            'text'        => 'Empresas',
+            'url'         => 'listarEmpresa',
+            'icon'        => 'far fa-building',
+            'label'       => null,
+            'label_color' => 'success',
+            'can' => 'admin'
         ],
 
         [
@@ -340,7 +348,7 @@ return [
             'label_color' => 'success',
         ],
 
-       /* ['header' => 'account_settings'],
+        /* ['header' => 'account_settings'],
         [
             'text' => 'profile',
             'url'  => 'admin/settings',

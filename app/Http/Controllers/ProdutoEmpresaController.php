@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Produto;
 use App\Models\ProdutoEmpresa;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,9 @@ class ProdutoEmpresaController extends Controller
     }
 
     public function create(){
-        return view('produtoEmpresa.create');
+        $produtos = Produto::all();
+
+        return view('produtoEmpresa.create', compact('produtos'));
     }
 
     public function editar($id){

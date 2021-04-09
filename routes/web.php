@@ -74,7 +74,13 @@ Route::group(['middleware' => ['auth:web'] ], function(){
     Route::get('/', function () {
         return view('dashboard');
     });
+    //Perfil da Empresa
     Route::get('/editarEmpresaUnica', [App\Http\Controllers\EmpresaController::class, 'editarUnica'])->name('empresa.editarUnica');
     Route::post('/storeEmpresaUnica', [App\Http\Controllers\EmpresaController::class, 'storeUnica'])->name('empresa.storeUnica');
+
+    //Meus Produtos
+    Route::get('/produtoEmpresa', [App\Http\Controllers\ProdutoEmpresaController::class, 'index'])->name('produtoEmpresa.index');
+    Route::get('/createprodutoEmpresa', [App\Http\Controllers\ProdutoEmpresaController::class, 'create'])->name('produtoEmpresa.create');
+
 
 });
