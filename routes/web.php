@@ -81,6 +81,8 @@ Route::group(['middleware' => ['auth:web'] ], function(){
     //Meus Produtos
     Route::get('/produtoEmpresa', [App\Http\Controllers\ProdutoEmpresaController::class, 'index'])->name('produtoEmpresa.index');
     Route::get('/createprodutoEmpresa', [App\Http\Controllers\ProdutoEmpresaController::class, 'create'])->name('produtoEmpresa.create');
+    Route::post('/storeprodutoEmpresa', [App\Http\Controllers\ProdutoEmpresaController::class, 'store'])->name('produtoEmpresa.store');
+    Route::get('/statusprodutoEmpresa/{id}', [App\Http\Controllers\ProdutoEmpresaController::class, 'checarStatus'])->name('produtoEmpresa.checarStatus');
 
 
 });

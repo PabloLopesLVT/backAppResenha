@@ -18,7 +18,7 @@ class CreateProdutosEmpresas extends Migration
             $table->integer('quantidade');
             $table->decimal('valor1');
             $table->decimal('valor2');
-            $table->unsignedBigInteger('produto_id');
+            $table->unsignedBigInteger('produto_id')->unique();
             $table->unsignedBigInteger('empresa_id');
             $table->timestamps();
 

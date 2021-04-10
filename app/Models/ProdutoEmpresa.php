@@ -25,7 +25,6 @@ class ProdutoEmpresa extends Model
                 'valor1' => 'required',
                 'valor2' => 'required',
                 'produto_id' => 'required',
-                'empresa_id' => 'required',
         ];
     }
 }

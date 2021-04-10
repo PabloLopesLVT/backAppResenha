@@ -5,32 +5,52 @@ namespace App\Http\Controllers;
 use App\Models\Produto;
 use App\Models\ProdutoEmpresa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Empresa;
+use Illuminate\Support\Facades\DB;
 
 class ProdutoEmpresaController extends Controller
 {
     public function index(){
-        $produto = new ProdutoEmpresa();
-        $produtos = $produto::all();
+        $produtoEmpresas = DB::table('produtos_empresas')
+            ->join('produtos', 'produtos_empresas.produto_id', '=', 'produtos.id')
+            ->select('produtos_empresas.id as idpe',
+                    'produtos.nome',
+                    'produtos_empresas.valor1',
+                    'produtos_empresas.valor2',
+                    'produtos_empresas.quantidade',
+                    )
+            ->get();
 
-        return view('produtoEmpresa.listar', compact('produtos'));
+        return view('produtoEmpresa.listar', compact('produtoEmpresas'));
 
     }
 
     public function create(){
         $produtos = Produto::all();
+        $user = DB::table('users')->where('id', Auth::id())->get();
 
-        return view('produtoEmpresa.create', compact('produtos'));
+        $empresa = Empresa::find($user[0]->empresa_id);
+        return view('produtoEmpresa.create', compact('produtos'), ['empresa' => $empresa]);
     }
 
     public function editar($id){
         $produto = ProdutoEmpresa::find($id);
         return view('produtoEmpresa.create', ['produto' => $produto]);
     }
+    public function checarStatus($id){
+        $produto = DB::table('produtos_empresas')
+        ->where('produto_id', $id)
+        ->get();
+
+        return response()->json(['message' => $produto->count(), 'id' => $id], 201);
+
+    }
 
     public function store(Request $request){
         $status = "";
         $msg = "";
-
+        try{
         $produto = new ProdutoEmpresa();
         if ($request->id == '') {
 
@@ -69,8 +89,10 @@ class ProdutoEmpresaController extends Controller
                 $msg = "Houve um erro na atualização dos dados!";
             }
      }
-
-        return view('produtoEmpresa.create', ['msg' => $msg, 'status' => $status]);
+    }catch (\Illuminate\Database\QueryException $e) {
+        return response()->json(['message' => $e], 201);
+    }
+     return response()->json(['message' => $msg], 201);
     }
 
     public function destroy($id){
