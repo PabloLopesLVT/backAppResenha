@@ -22,7 +22,7 @@ Auth::routes();
 /*
 Rotas do Administrador Master
 */
-Route::group(['middleware' => ['auth:web'] ], function(){
+Route::group(['middleware' => ['auth:web', 'is_admin'] ], function(){
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -63,6 +63,14 @@ Route::get('/deletarUsuario/{id}', [App\Http\Controllers\UsuarioController::clas
 Route::get('/deletarEndereco/{id}', [App\Http\Controllers\EnderecoController::class, 'destroy'])->name('endereco.destroy');
 Route::get('/deletarFuncionario/{id}', [App\Http\Controllers\FuncionarioController::class, 'destroy'])->name('funcionario.destroy');
 Route::get('/deletarProduto/{id}', [App\Http\Controllers\ProdutoController::class, 'destroy'])->name('produto.destroy');
+
+
+//Categoria
+Route::get('/createCategoria', [App\Http\Controllers\CategoriaProdutoController::class, 'create'])->name('categoria.create');
+Route::post('/storeCategoria', [App\Http\Controllers\CategoriaProdutoController::class, 'store'])->name('categoria.store');
+Route::get('/listarCategoria', [App\Http\Controllers\CategoriaProdutoController::class, 'index'])->name('categoria.index');
+Route::get('/editarCategoria/{id}', [App\Http\Controllers\CategoriaProdutoController::class, 'editar'])->name('categoria.editar');
+Route::get('/deletarCategoria{id}', [App\Http\Controllers\CategoriaProdutoController::class, 'destroy'])->name('categoria.destroy');
 
 
 });

@@ -5,26 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Produto extends Model
+class CategoriaProduto extends Model
 {
     use HasFactory;
-    protected $table = "produtos";
+    protected $table = "categoria_produtos";
     protected $fillable = [
         'id',
         'nome',
-        'marca',
-        'status',
-        'imagem',
-        'categoria'
+        'icone'
     ];
 
     public function rules(){
         return [
             'nome' => 'required',
-                'marca' => 'required',
-                'status' => 'required',
-                'imagem' => 'required',
-                'categoria' => 'required'
+            'icone' => 'required',
         ];
     }
+
 }

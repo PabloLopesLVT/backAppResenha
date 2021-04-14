@@ -17,6 +17,7 @@
                     <th scope="col">Imagem</th>
                     <th scope="col">Nome</th>
                     <th scope="col">Marca</th>
+                    <th scope="col">Categoria</th>
                     <th scope="col">Ativar/Desativar</th>
 
                     <th scope="col">Ações</th>
@@ -28,21 +29,22 @@
                     @foreach ($produtos as $produto)
                         <tr>
                             <td><img width="50" src="{{ asset('storage/produtos/' . $produto->imagem) }}" /> </td>
-                            <td>{{ $produto->nome }}</td>
+                            <td>{{ $produto->nomeproduto }}</td>
                             <td>{{ $produto->marca }}</td>
+                            <td>{{ $produto->nome }}</td>
                             <td><label class="switch">
                                 @if ($produto->status )
-                                <input class="checkbox" data-id="{{ $produto->id }}"  type="checkbox" checked>
+                                <input class="checkbox" data-id="{{ $produto->idproduto }}"  type="checkbox" checked>
                                 <span class="slider round"></span>
                                 @else
-                                <input class="checkbox" data-id="{{ $produto->id }}"  type="checkbox" unchecked>
+                                <input class="checkbox" data-id="{{ $produto->idproduto }}"  type="checkbox" unchecked>
                                 <span class="slider round"></span>
                                 @endif
 
                                 </label></td>
 
-                            <td><a href="{{ route('produto.editar', $produto->id) }}"><i class="fas fa-user-edit"></i></a>
-                                <a href="{{ route('produto.destroy', $produto->id) }}"><i
+                            <td><a href="{{ route('produto.editar', $produto->idproduto) }}"><i class="fas fa-user-edit"></i></a>
+                                <a href="{{ route('produto.destroy', $produto->idproduto) }}"><i
                                         class="fas fa-user-times"></i></a>
                             </td>
                         </tr>

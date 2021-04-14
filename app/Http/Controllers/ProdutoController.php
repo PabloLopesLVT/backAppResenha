@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategoriaProduto;
 use App\Models\Produto;
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ProdutoController extends Controller
 {
@@ -25,20 +27,23 @@ class ProdutoController extends Controller
 
 
     public function index(){
-        $produto = new Produto();
-        $produtos = $produto::all();
-
+        $produtos = DB::table('produtos AS p')
+        ->select('p.id AS idproduto', 'p.nome as nomeproduto', 'p.imagem', 'p.marca', 'p.status', 'categoria_produtos.nome')
+        ->join('categoria_produtos', 'p.categoria_produto_id', '=', 'categoria_produtos.id')
+        ->get();
         return view('produto.listar', compact('produtos'));
 
     }
 
     public function create(){
-        return view('produto.create');
+        $categorias = CategoriaProduto::all();
+        return view('produto.create', compact('categorias'));
     }
 
     public function editar($id){
         $produto = Produto::find($id);
-        return view('produto.create', ['produto' => $produto]);
+        $categorias = CategoriaProduto::all();
+        return view('produto.create', compact('categorias'), ['produto' => $produto]);
     }
 
     public function store(Request $request){
@@ -50,20 +55,6 @@ class ProdutoController extends Controller
 
             $this->validate($request, $produto->rules());
 
-
-       /*     if($request->hasFile('imagem') && $request->file('imagem')->isValid()){
-                $extension = $request->imagem->extension();
-
-                $name = uniqid(date('His'));
-
-                $nameFile = "{$name}.{$extension}";
-                $upload  = Image::make($request->file('imagem'))->resize(200, 200)->save(storage_path("app/public/produtos/$nameFile", 70));
-
-                if(!$upload){
-                    return view('produto.create', ['msg' => "Falha ao fazer upload da imagem", 'status' => 'danger']);
-                }
-
-            }*/
             $folderPath = storage_path('/app/public/produtos/');
 
             $image_parts = explode(";base64,", $request->imagem);
@@ -81,6 +72,7 @@ class ProdutoController extends Controller
             $produto->nome = $request->input('nome');
             $produto->marca = $request->input('marca');
             $produto->status = $request->input('status');
+            $produto->categoria_produto_id = $request->input('categoria');
             $produto->imagem = $imageName;
 
             $salvar  = $produto->save();
@@ -95,24 +87,26 @@ class ProdutoController extends Controller
 
         }else{
 
-            if($request->hasFile('imagem') && $request->file('imagem')->isValid()){
-                $extension = $request->imagem->extension();
+            $folderPath = storage_path('/app/public/produtos/');
 
-                $name = uniqid(date('His'));
+            $image_parts = explode(";base64,", $request->imagem);
 
-                $nameFile = "{$name}.{$extension}";
-                $upload  = Image::make($request->file('imagem'))->resize(200, 200)->save(storage_path("app/public/produtos/$nameFile", 70));
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            $image_base64 = base64_decode($image_parts[1]);
 
-                if(!$upload){
-                    return view('produto.create', ['msg' => "Falha ao fazer upload da imagem", 'status' => 'danger']);
-                }
+            $imageName = uniqid() . '.png';
 
-            }
+            $imageFullPath = $folderPath.$imageName;
+
+            file_put_contents($imageFullPath, $image_base64);
+
             $produto  = Produto::find($request->input('id'));
             $produto->nome = $request->input('nome');
             $produto->marca = $request->input('marca');
             $produto->status = $request->input('status');
-            $produto->imagem = $nameFile;
+            $produto->imagem = $imageName;
+            $produto->categoria_produto_id = $request->input('categoria');
             $update = $produto->update();
             if($update){
                 $status = "success";
@@ -123,7 +117,11 @@ class ProdutoController extends Controller
             }
      }
 
-        return view('produto.create', ['msg' => $msg, 'status' => $status]);
+     $produtos = DB::table('produtos AS p')
+        ->select('p.id AS idproduto', 'p.nome as nomeproduto', 'p.imagem', 'p.marca', 'p.status', 'categoria_produtos.nome')
+        ->join('categoria_produtos', 'p.categoria_produto_id', '=', 'categoria_produtos.id')
+        ->get();
+        return view('produto.listar', compact('produtos'), ['msg' => $msg, 'status' => $status]);
     }
 
     public function destroy($id){
@@ -135,7 +133,10 @@ class ProdutoController extends Controller
             //Tenho que ver pra onde vou mandar o cara quando ele deletar
             $msg = "Você não pode excluir o registro $produto->razaosocial porque há registro em dependência desse registro.";
             $status = "danger";
-            $produtos = Produto::get();
+            $produtos = DB::table('produtos AS p')
+            ->select('p.id AS idproduto', 'p.nome as nomeproduto', 'p.imagem', 'p.marca', 'p.status', 'categoria_produtos.nome')
+            ->join('categoria_produtos', 'p.categoria_produto_id', '=', 'categoria_produtos.id')
+            ->get();
             return view('produto.listar', ['msg' => $msg, 'status' => $status], compact('produtos'));
 
         }
@@ -147,7 +148,10 @@ class ProdutoController extends Controller
             $msg = "Houve um erro na atualização dos dados!";
         }
 
-
-        return view('produto.create', ['msg' => $msg, 'status' => $status]);
+        $produtos = DB::table('produtos AS p')
+        ->select('p.id AS idproduto', 'p.nome as nomeproduto', 'p.imagem', 'p.marca', 'p.status', 'categoria_produtos.nome')
+        ->join('categoria_produtos', 'p.categoria_produto_id', '=', 'categoria_produtos.id')
+        ->get();
+        return view('produto.listar', compact('produtos'), ['msg' => $msg, 'status' => $status]);
     }
 }

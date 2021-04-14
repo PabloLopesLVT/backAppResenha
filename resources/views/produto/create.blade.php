@@ -81,6 +81,17 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-12 ">
+                        <div class="form-group">
+                            <label for="categoria">Categoria</label>
+                            <select class="form-control" name="categoria" required>
+                                <option value="">Selecione</option>
+                                @foreach ($categorias as $categoria)
+                                    <option value="{{ $categoria->id }}">{{ $categoria->nome }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
             </div>

@@ -260,6 +260,14 @@ return [
             'can' => 'empresa'
         ],
         [
+            'text'        => 'Categoria do Produto',
+            'url'         => 'listarCategoria',
+            'icon'        => 'fas fa-filter',
+            'label'       => null,
+            'label_color' => 'success',
+            'can' => 'admin'
+        ],
+        [
             'text'        => 'Meus Produtos',
             'url'         => 'produtoEmpresa',
             'icon'        => 'fas fa-lightbulb',
