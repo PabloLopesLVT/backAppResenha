@@ -150,15 +150,15 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="latitude">Latitude </label>
-                        <input type="text" value="{{ $endereco->latitude ?? old('latitude') }}"
-                            class="form-control" id="latitude" name="latitude" placeholder="">
+                        <input type="text" value="{{ $endereco->latitude ?? old('latitude') }}" class="form-control"
+                            id="latitude" name="latitude" placeholder="">
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="longitude">Longitude</label>
-                        <input type="text" value="{{ $endereco->longitude ?? old('longitude') }}"
-                            class="form-control" id="longitude" name="longitude" placeholder="">
+                        <input type="text" value="{{ $endereco->longitude ?? old('longitude') }}" class="form-control"
+                            id="longitude" name="longitude" placeholder="">
                     </div>
                 </div>
                 <div class="col-12 ">
@@ -216,24 +216,29 @@
                 $('#latitude').val(place.geometry.location.lat())
                 $('#longitude').val(place.geometry.location.lng())
                 console.log(place.address_components[0].types[0])
+                console.log(place.address_components.length)
+
                 if (place.address_components[0].types[0] === 'street_number') {
+                    for (var i = 0; i < place.address_components.length; i++) {
 
-                    $('#numero').val(place.address_components[0].long_name);
-                    place.address_components[1].types[0] === 'route' ? $('#logradouro').val(place.address_components[1].long_name) : '';
 
-                    if(place.address_components[2].types[0] === 'sublocality_level_1'){
-                        $('#bairro').val(place.address_components[2].long_name);
-                    }
-                    if(place.address_components[4].types[0] === 'administrative_area_level_1'){
-                        $('#estado').val(place.address_components[4].short_name);
-                    }
-                    if(place.address_components[3].types[0] === 'administrative_area_level_2'){
-                        $('#municipio').val(place.address_components[3].long_name);
-                    }
-                    if(place.address_components[6].types[0] === 'postal_code'){
-                        $('#cep').val(place.address_components[6].long_name);
-                    }
+                        $('#numero').val(place.address_components[0].long_name);
+                        place.address_components[i].types[0] === 'route' ? $('#logradouro').val(place
+                            .address_components[i].long_name) : '';
 
+                        if (place.address_components[i].types[0] === 'sublocality_level_1') {
+                            $('#bairro').val(place.address_components[i].long_name);
+                        }
+                        if (place.address_components[i].types[0] === 'administrative_area_level_1') {
+                            $('#estado').val(place.address_components[i].short_name);
+                        }
+                        if (place.address_components[i].types[0] === 'administrative_area_level_2') {
+                            $('#municipio').val(place.address_components[i].long_name);
+                        }
+                        if (place.address_components[i].types[0] === 'postal_code') {
+                            $('#cep').val(place.address_components[i].long_name);
+                        }
+                    }
                 } else {
                     Swal.fire(
                         'Busca de Endereços',
