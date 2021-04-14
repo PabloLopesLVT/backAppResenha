@@ -153,7 +153,8 @@ class EmpresaController extends Controller
             $endereco->estado = $request->input('estado');
             $endereco->complemento = $request->input('complemento');
             $endereco->observacoes = $request->input('observacoes');
-
+            $endereco->latitude = $request->input('latitude');
+            $endereco->longitude = $request->input('longitude');
             $salvar  = $endereco->save();
 
             if($salvar){
@@ -187,6 +188,8 @@ class EmpresaController extends Controller
             $endereco->estado = $request->input('estado');
             $endereco->complemento = $request->input('complemento');
             $endereco->observacoes = $request->input('observacoes');
+            $endereco->latitude = $request->input('latitude');
+            $endereco->longetude = $request->input('longetude');
             $salvar  = $endereco->save();
 
             $empresa  = Empresa::find($request->input('id'));
@@ -207,8 +210,11 @@ class EmpresaController extends Controller
                 $msg = "Houve um erro na atualização dos dados!";
             }
      }
-
-        return view('perfilEmpresa.editar', ['msg' => $msg, 'status' => $status]);
+     $empresas = DB::table('empresas AS e')
+     ->select('e.id AS idempresa', 'e.nomeEmpresa', 'e.email', 'e.cnpj','e.responsavel','e.razaoSocial','e.celular', 'enderecos.logradouro', 'enderecos.municipio', 'enderecos.estado')
+     ->join('enderecos', 'e.endereco_id', '=', 'enderecos.id')
+     ->get();
+        return view('empresa.listar', compact('empresas'), ['msg' => $msg, 'status' => $status]);
     }
 
     public function destroy($id)

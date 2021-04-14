@@ -11,22 +11,24 @@ use Illuminate\Support\Facades\DB;
 
 class ProdutoEmpresaController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $produtoEmpresas = DB::table('produtos_empresas')
             ->join('produtos', 'produtos_empresas.produto_id', '=', 'produtos.id')
-            ->select('produtos_empresas.id as idpe',
-                    'produtos.nome',
-                    'produtos_empresas.valor1',
-                    'produtos_empresas.valor2',
-                    'produtos_empresas.quantidade',
-                    )
+            ->select(
+                'produtos_empresas.id as idpe',
+                'produtos.nome',
+                'produtos_empresas.valor1',
+                'produtos_empresas.valor2',
+                'produtos_empresas.quantidade',
+            )
             ->get();
 
         return view('produtoEmpresa.listar', compact('produtoEmpresas'));
-
     }
 
-    public function create(){
+    public function create()
+    {
         $produtos = Produto::all();
         $user = DB::table('users')->where('id', Auth::id())->get();
 
@@ -34,89 +36,115 @@ class ProdutoEmpresaController extends Controller
         return view('produtoEmpresa.create', compact('produtos'), ['empresa' => $empresa]);
     }
 
-    public function editar($id){
-        $produto = ProdutoEmpresa::find($id);
-        return view('produtoEmpresa.create', ['produto' => $produto]);
+    public function editar($id)
+    {
+        $produtoEmpresa = ProdutoEmpresa::find($id);
+
+        return view('produtoEmpresa.alterar', ['produtoEmpresa' => $produtoEmpresa]);
     }
-    public function checarStatus($id){
+    public function checarStatus($id)
+    {
         $produto = DB::table('produtos_empresas')
-        ->where('produto_id', $id)
-        ->get();
+            ->where('produto_id', $id)
+            ->get();
 
         return response()->json(['message' => $produto->count(), 'id' => $id], 201);
-
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $status = "";
         $msg = "";
-        try{
-        $produto = new ProdutoEmpresa();
-        if ($request->id == '') {
 
-            $this->validate($request, $produto->rules());
+        try {
+            $produto = new ProdutoEmpresa();
+            if ($request->id == '') {
 
-            $produto->quantidade = $request->input('quantidade');
-            $produto->valor1 = $request->input('valor1');
-            $produto->valor2 = $request->input('valor2');
-            $produto->produto_id = $request->input('produto_id');
-            $produto->empresa_id = $request->input('empresa_id');
+                $this->validate($request, $produto->rules());
 
-            $salvar  = $produto->save();
+                $produto->quantidade = $request->input('quantidade');
+                $produto->valor1 = $request->input('valor1');
+                $produto->valor2 = $request->input('valor2');
+                $produto->produto_id = $request->input('produto_id');
+                $produto->empresa_id = $request->input('empresa_id');
 
-            if($salvar){
-                $status = "success";
-                $msg = "Registro salvo com sucesso!";
-            }else{
-                $status = "danger";
-                $msg = "Houve erro ao salvar o registro!";
+                $salvar  = $produto->save();
+
+                if ($salvar) {
+                    $status = "success";
+                    $msg = "Registro salvo com sucesso!";
+                } else {
+                    $status = "danger";
+                    $msg = "Houve erro ao salvar o registro!";
+                }
+            } else {
+                $produto  = ProdutoEmpresa::find($request->input('id'));
+                $produto->quantidade = $request->input('quantidade');
+                $produto->valor1 = $request->input('valor1');
+                $produto->valor2 = $request->input('valor2');
+                $produto->produto_id = $request->input('produto_id');
+                $produto->empresa_id = $request->input('empresa_id');
+
+                $update = $produto->update();
+                if ($update) {
+                    $status = "success";
+                    $msg = "Atualização realizada com sucesso!";
+                } else {
+                    $status = "danger";
+                    $msg = "Houve um erro na atualização dos dados!";
+                }
             }
-
-        }else{
-            $produto  = ProdutoEmpresa::find($request->input('id'));
-            $produto->quantidade = $request->input('quantidade');
-            $produto->valor1 = $request->input('valor1');
-            $produto->valor2 = $request->input('valor2');
-            $produto->produto_id = $request->input('produto_id');
-            $produto->empresa_id = $request->input('empresa_id');
-
-            $update = $produto->update();
-            if($update){
-                $status = "success";
-                $msg = "Atualização realizada com sucesso!";
-            }else{
-                $status = "danger";
-                $msg = "Houve um erro na atualização dos dados!";
-            }
-     }
-    }catch (\Illuminate\Database\QueryException $e) {
-        return response()->json(['message' => $e], 201);
-    }
-     return response()->json(['message' => $msg], 201);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e], 400);
+        }
+        if ($request->input('alterar') != null) {
+            $produtoEmpresas = DB::table('produtos_empresas')
+            ->join('produtos', 'produtos_empresas.produto_id', '=', 'produtos.id')
+            ->select(
+                'produtos_empresas.id as idpe',
+                'produtos.nome',
+                'produtos_empresas.valor1',
+                'produtos_empresas.valor2',
+                'produtos_empresas.quantidade',
+            )
+            ->get();
+            return view('produtoEmpresa.listar', compact('produtoEmpresas'), ['msg' => $msg, 'status' => $status]);
+        } else {
+            return response()->json(['message' => $msg], 201);
+        }
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $produto = ProdutoEmpresa::find($id);
-
-        try{
+        $produtoEmpresas = DB::table('produtos_empresas')
+        ->join('produtos', 'produtos_empresas.produto_id', '=', 'produtos.id')
+        ->select(
+            'produtos_empresas.id as idpe',
+            'produtos.nome',
+            'produtos_empresas.valor1',
+            'produtos_empresas.valor2',
+            'produtos_empresas.quantidade',
+        )
+        ->get();
+        try {
             $delete = $produto->delete();
-        }catch (\Illuminate\Database\QueryException $e) {
+        } catch (\Illuminate\Database\QueryException $e) {
             //Tenho que ver pra onde vou mandar o cara quando ele deletar
             $msg = "Você não pode excluir o registro $produto->razaosocial porque há registro em dependência desse registro.";
             $status = "danger";
-            $produtos = ProdutoEmpresa::get();
-            return view('produtoEmpresa.listar', ['msg' => $msg, 'status' => $status], compact('produtos'));
 
+            return view('produtoEmpresa.listar', ['msg' => $msg, 'status' => $status], compact('produtoEmpresas'));
         }
-        if($delete){
+        if ($delete) {
             $status = "success";
             $msg = "Deleção realizada com sucesso!";
-        }else{
+        } else {
             $status = "danger";
             $msg = "Houve um erro na atualização dos dados!";
         }
 
 
-        return view('produtoEmpresa.create', ['msg' => $msg, 'status' => $status]);
+        return view('produtoEmpresa.listar', ['msg' => $msg, 'status' => $status], compact('produtoEmpresas'));
     }
 }

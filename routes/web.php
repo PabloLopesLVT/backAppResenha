@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/teste1', function () {
-    return "entro no middleware";
-})->middleware('is_admin');
 
  Route::get('/dashboard', function () {
         return view('dashboard');
@@ -22,7 +19,10 @@ Route::get('/teste1', function () {
 Route::get('/teste', [App\Http\Controllers\GatewayPagamentoController::class, 'teste'])->name('g.teste');
 
 Auth::routes();
-Route::group(['middleware' => ['auth:web', 'is_admin'] ], function(){
+/*
+Rotas do Administrador Master
+*/
+Route::group(['middleware' => ['auth:web'] ], function(){
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -66,7 +66,9 @@ Route::get('/deletarProduto/{id}', [App\Http\Controllers\ProdutoController::clas
 
 
 });
-
+/*
+Rotas da Empresa
+*/
 Route::group(['middleware' => ['auth:web'] ], function(){
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -83,6 +85,8 @@ Route::group(['middleware' => ['auth:web'] ], function(){
     Route::get('/createprodutoEmpresa', [App\Http\Controllers\ProdutoEmpresaController::class, 'create'])->name('produtoEmpresa.create');
     Route::post('/storeprodutoEmpresa', [App\Http\Controllers\ProdutoEmpresaController::class, 'store'])->name('produtoEmpresa.store');
     Route::get('/statusprodutoEmpresa/{id}', [App\Http\Controllers\ProdutoEmpresaController::class, 'checarStatus'])->name('produtoEmpresa.checarStatus');
+    Route::get('/editarprodutoEmpresa/{id}', [App\Http\Controllers\ProdutoEmpresaController::class, 'editar'])->name('produtoEmpresa.editar');
+    Route::get('/deletarprodutoEmpresa/{id}', [App\Http\Controllers\ProdutoEmpresaController::class, 'destroy'])->name('produtoEmpresa.destroy');
 
 
 });

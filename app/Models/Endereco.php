@@ -20,7 +20,9 @@ class Endereco extends Model
         'estado',
         'cep',
         'complemento',
-        'observacoes'
+        'observacoes',
+        'latitude',
+        'longitude'
     ];
 }
 

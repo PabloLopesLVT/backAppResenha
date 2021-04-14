@@ -23,6 +23,8 @@ class CreateEnderecos extends Migration
             $table->string('estado');
             $table->string('complemento')->nullable();
             $table->string('observacoes')->nullable();
+            $table->double('latitude');
+            $table->double('longitude');
             $table->timestamps();
         });
     }

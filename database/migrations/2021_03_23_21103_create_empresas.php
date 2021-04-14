@@ -23,6 +23,7 @@ class CreateEmpresas extends Migration
             $table->string('cnpj')->unique();
             $table->unsignedBigInteger('endereco_id')->unsigned() ;
 
+
             $table->timestamps();
 
             //Constrain

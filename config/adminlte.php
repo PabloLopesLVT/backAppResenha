@@ -526,6 +526,26 @@ return [
             ],
         ],
 
+    'GoogleAPI' => [
+        'active' => true,
+        'files' => [
+            [
+                'type' => 'js',
+                'asset' => true,
+                'location' => 'https://maps.googleapis.com/maps/api/js?key='.env("KEY_GOOGLE_API").'&libraries=places',
+            ],
+        ],
+    ],
+        'JqueryMaskMoney' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js',
+                ],
+            ],
+        ],
 
         'Pace' => [
             'active' => false,

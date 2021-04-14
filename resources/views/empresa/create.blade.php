@@ -63,6 +63,12 @@
 
             <div class="row shadow p-3 mb-5 bg-white rounded">
                 <div class="col-12  font-weight-bold mb-4 p-2 h5">Endereço da Empresa</div>
+                <div class="col-12 ">
+                    <div class="form-group">
+                        <label for="address">Endereço Completo</label>
+                        <input type="text" class="form-control" id="address" name="address" required>
+                    </div>
+                </div>
                 <div class="col-12 col-md-2">
                     <div class="form-group">
                         <label for="cep">CEP</label>
@@ -74,20 +80,20 @@
                     <div class="form-group">
                         <label for="logradouro">Logradouro</label>
                         <input type="text" value="{{ $endereco->logradouro ?? old('logradouro') }}" class="form-control"
-                            id="logradouro" name="logradouro" placeholder="Informe a rua, av, alameda etc" required >
+                            id="logradouro" name="logradouro" placeholder="Informe a rua, av, alameda etc" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-2">
                     <div class="form-group">
                         <label for="numero">Nº</label>
                         <input type="text" value="{{ $endereco->numero ?? old('numero') }}" class="form-control"
-                            id="numero" name="numero" placeholder="120" required >
+                            id="numero" name="numero" placeholder="120" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="estado">Estado</label>
-                        <select class="form-control"  name="estado" id="estado" required >
+                        <select class="form-control" name="estado" id="estado" required>
                             <option selected value="">Selecione</option>
                             <option value="AC">Acre</option>
                             <option value="AL">Alagoas</option>
@@ -123,14 +129,14 @@
                     <div class="form-group">
                         <label for="municipio">Município</label>
                         <input type="text" value="{{ $endereco->municipio ?? old('municipio') }}" class="form-control"
-                            id="municipio" name="municipio" placeholder="Selecione sua cidade" required >
+                            id="municipio" name="municipio" placeholder="Selecione sua cidade" required>
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
                     <div class="form-group">
                         <label for="bairro">Bairro</label>
                         <input type="text" value="{{ $endereco->bairro ?? old('bairro') }}" class="form-control"
-                            id="bairro" name="bairro" placeholder="Digite o bairro" required >
+                            id="bairro" name="bairro" placeholder="Digite o bairro" required>
                     </div>
                 </div>
 
@@ -138,13 +144,28 @@
                     <div class="form-group">
                         <label for="complemento">Complemento</label>
                         <input type="text" value="{{ $endereco->complemento ?? old('complemento') }}"
-                            class="form-control" id="complemento" name="complemento" placeholder="Loja 01"  >
+                            class="form-control" id="complemento" name="complemento" placeholder="Loja 01">
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <label for="latitude">Latitude </label>
+                        <input type="text" value="{{ $endereco->latitude ?? old('latitude') }}"
+                            class="form-control" id="latitude" name="latitude" placeholder="">
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <label for="longitude">Longitude</label>
+                        <input type="text" value="{{ $endereco->longitude ?? old('longitude') }}"
+                            class="form-control" id="longitude" name="longitude" placeholder="">
                     </div>
                 </div>
                 <div class="col-12 ">
                     <div class="form-group">
                         <label for="observacoes">Observações</label>
-                        <textarea class="form-control"   id="observacoes" name="observacoes" rows="3" placeholder="Digite observações se necessário.">{{ $endereco->observacoes ?? old('observacoes') }}</textarea>
+                        <textarea class="form-control" id="observacoes" name="observacoes" rows="3"
+                            placeholder="Digite observações se necessário.">{{ $endereco->observacoes ?? old('observacoes') }}</textarea>
                     </div>
                 </div>
                 <div class="col-12 ">
@@ -154,7 +175,8 @@
 
         </div>
     </form>
-    <div id="wait" style="display:none;width:69px;height:89px;position:absolute;top:50%;left:50%;padding:2px;"><img src='{{ asset('img/loading.gif')}}' width="64" height="64" /><br>Carregando..</div>
+    <div id="wait" style="display:none;width:69px;height:89px;position:absolute;top:50%;left:50%;padding:2px;"><img
+            src='{{ asset('img/loading.gif') }}' width="64" height="64" /><br>Carregando..</div>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -172,32 +194,86 @@
 @stop
 
 @section('js')
+
     <script>
+        var input = document.getElementById('address');
+
+        $(function() {
+            var options = {
+                componentRestrictions: {
+                    country: 'br'
+                }
+            };
+            var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+
+            autocomplete.addListener('place_changed', function() {
+
+                var place = autocomplete.getPlace();
+                console.log(place.address_components);
+                console.log(place.geometry.location.lat())
+                console.log(place.geometry.location.lng())
+                $('#latitude').val(place.geometry.location.lat())
+                $('#longitude').val(place.geometry.location.lng())
+                console.log(place.address_components[0].types[0])
+                if (place.address_components[0].types[0] === 'street_number') {
+
+                    $('#numero').val(place.address_components[0].long_name);
+                    place.address_components[1].types[0] === 'route' ? $('#logradouro').val(place.address_components[1].long_name) : '';
+
+                    if(place.address_components[2].types[0] === 'sublocality_level_1'){
+                        $('#bairro').val(place.address_components[2].long_name);
+                    }
+                    if(place.address_components[4].types[0] === 'administrative_area_level_1'){
+                        $('#estado').val(place.address_components[4].short_name);
+                    }
+                    if(place.address_components[3].types[0] === 'administrative_area_level_2'){
+                        $('#municipio').val(place.address_components[3].long_name);
+                    }
+                    if(place.address_components[6].types[0] === 'postal_code'){
+                        $('#cep').val(place.address_components[6].long_name);
+                    }
+
+                } else {
+                    Swal.fire(
+                        'Busca de Endereços',
+                        'Faça a busca novamente com o número!',
+                        'error'
+                    )
+                }
+                if (!place.geometry) {
+                    return;
+                }
+            });
+
+
+        });
         $('#cnpj').mask('00.000.000/0000-00');
         $('#cep').mask('00000-000');
         $('#telefone').mask('(00) 0 0000-0000');
-        $('#cep').blur(function(){
-            $.ajax({
-                url: "https://viacep.com.br/ws/"+$('#cep').val()+"/json/",
-                dataType: 'json'
-            })
-            .done(function(data) {
-                console.log(data);
-                $('#logradouro').val(data.logradouro);
-                $('#bairro').val(data.bairro);
-                $('#estado').val(data.uf);
-                $('#complemento').val(data.complemento);
-                $('#municipio').val(data.localidade);
-            })
-            .fail(function(jqXHR, textStatus, msg) {
-                alert(msg);
-            });
-        })
-        $(document).ajaxStart(function(){
-    $("#wait").css("display", "block");
-  });
-  $(document).ajaxComplete(function(){
-    $("#wait").css("display", "none");
-  });
+        /*  $('#cep').blur(function(){
+              $.ajax({
+                  url: "https://viacep.com.br/ws/"+$('#cep').val()+"/json/",
+                  dataType: 'json'
+              })
+              .done(function(data) {
+                  console.log(data);
+                  $('#logradouro').val(data.logradouro);
+                  $('#bairro').val(data.bairro);
+                  $('#estado').val(data.uf);
+                  $('#complemento').val(data.complemento);
+                  $('#municipio').val(data.localidade);
+              })
+              .fail(function(jqXHR, textStatus, msg) {
+                  alert(msg);
+              });
+          })*/
+        $(document).ajaxStart(function() {
+            $("#wait").css("display", "block");
+        });
+        $(document).ajaxComplete(function() {
+            $("#wait").css("display", "none");
+        });
+
     </script>
 @stop
