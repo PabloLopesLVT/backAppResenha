@@ -34,7 +34,6 @@ Route::group(['middleware' => 'auth:api'], function(){
     });
     Route::get('/logout', [LoginController::class, 'logout']);
 
-});
 
 
 //Store
@@ -42,3 +41,16 @@ Route::post('/storeUsuario', [App\Http\Controllers\api\UsuarioApiController::cla
 
 //Deletar
 Route::get('/destroyUsuario/{id}', [App\Http\Controllers\api\UsuarioApiController::class, 'destroy']);
+
+//Produtos - Empresa
+
+
+});
+
+
+Route::get('/buscarNomeProdutoEmpresa/{nome}/{latitude}/{longitude}/', [App\Http\Controllers\api\ProdutoEmpresaController::class, 'buscaNome']);
+Route::get('/buscarCategoriaProdutoEmpresa/{categoria}/{latitude}/{longitude}/', [App\Http\Controllers\api\ProdutoEmpresaController::class, 'buscaCategoria']);
+Route::get('/buscarPreco/{valorinicial}/{valorterminal}/{latitude}/{longitude}/', [App\Http\Controllers\api\ProdutoEmpresaController::class, 'buscaPreco']);
+
+
+Route::get('/buscarCategorias', [App\Http\Controllers\api\CategoriaController::class, 'index']);
