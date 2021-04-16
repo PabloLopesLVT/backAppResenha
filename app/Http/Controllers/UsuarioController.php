@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Endereco;
 use App\Models\Usuario;
+use App\Models\UsuarioHasEndereco;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -56,9 +57,16 @@ class UsuarioController extends Controller
             $usuario->email = $request->input('email');
             $usuario->cpf = $request->input('cpf');
             $usuario->tipo = $request->input('tipo');
-            $usuario->endereco_id = $endereco->id;
 
             $salvar  = $usuario->save();
+
+            $usuSaved  = DB::table('usuarios')->orderBy('id', 'desc')->first();
+
+            $UsuarioHasEndereco = new UsuarioHasEndereco();
+
+            $UsuarioHasEndereco->usuario_id =  $usuSaved->id;
+            $UsuarioHasEndereco->endereco_id =  $endereco->id;
+            $salvar  = $UsuarioHasEndereco->save();
 
             if($salvar){
                 $status = "success";
@@ -95,9 +103,17 @@ class UsuarioController extends Controller
             $usuario->email = $request->input('email');
             $usuario->cpf = $request->input('cpf');
             $usuario->tipo = $request->input('tipo');
-            $usuario->endereco_id = $request->input('idendereco');
+
 
             $update  = $usuario->update();
+
+            $usuSaved  = DB::table('usuarios')->orderBy('id', 'desc')->first();
+
+            $UsuarioHasEndereco = new UsuarioHasEndereco();
+
+            $UsuarioHasEndereco->usuario_id =  $usuSaved->id;
+            $UsuarioHasEndereco->endereco_id =  $endereco->id;
+            $update  = $UsuarioHasEndereco->update();
 
             if($update){
                 $status = "success";

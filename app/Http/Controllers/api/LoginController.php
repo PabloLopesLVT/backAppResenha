@@ -11,8 +11,6 @@ class LoginController extends Controller
 {
     public function login(Request $request){
 
-
-
         $credenciais = request(['email', 'password']);
         if(!Auth::attempt($credenciais)){
             $erro = "Não autorizado";

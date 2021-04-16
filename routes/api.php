@@ -36,16 +36,22 @@ Route::group(['middleware' => 'auth:api'], function(){
 
 
 
-//Store
-Route::post('/storeUsuario', [App\Http\Controllers\api\UsuarioApiController::class, 'store']);
+
 
 //Deletar
-Route::get('/destroyUsuario/{id}', [App\Http\Controllers\api\UsuarioApiController::class, 'destroy']);
 
 //Produtos - Empresa
 
 
 });
+//Store
+Route::post('/storeUsuario', [App\Http\Controllers\api\UsuarioApiController::class, 'store']);
+Route::post('/editarUsuario', [App\Http\Controllers\api\UsuarioApiController::class, 'editarUsuario']);
+Route::get('/destroyUsuario/{id}', [App\Http\Controllers\api\UsuarioApiController::class, 'destroy']);
+
+Route::post('/createEndereco', [App\Http\Controllers\api\EnderecoController::class, 'createEndereco']);
+Route::post('/editarEndereco', [App\Http\Controllers\api\EnderecoController::class, 'editarEndereco']);
+Route::get('/destroyEndereco/{idusuario}/{idendereco}', [App\Http\Controllers\api\EnderecoController::class, 'destroy']);
 
 
 Route::get('/buscarNomeProdutoEmpresa/{nome}/{latitude}/{longitude}/', [App\Http\Controllers\api\ProdutoEmpresaController::class, 'buscaNome']);
