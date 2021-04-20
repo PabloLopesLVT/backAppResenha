@@ -44,19 +44,26 @@ Route::group(['middleware' => 'auth:api'], function(){
 
 
 });
+
+//Criar pedido
+Route::post('/criarPedido', [App\Http\Controllers\api\PedidoController::class, 'criarPedido']);
+Route::get('/pedidoAberto/{usuario_id}', [App\Http\Controllers\api\PedidoController::class, 'pedidoAberto']);
+
+
 //Store
 Route::post('/storeUsuario', [App\Http\Controllers\api\UsuarioApiController::class, 'store']);
 Route::post('/editarUsuario', [App\Http\Controllers\api\UsuarioApiController::class, 'editarUsuario']);
 Route::get('/destroyUsuario/{id}', [App\Http\Controllers\api\UsuarioApiController::class, 'destroy']);
 
+//Endereço
 Route::post('/createEndereco', [App\Http\Controllers\api\EnderecoController::class, 'createEndereco']);
 Route::post('/editarEndereco', [App\Http\Controllers\api\EnderecoController::class, 'editarEndereco']);
 Route::get('/destroyEndereco/{idusuario}/{idendereco}', [App\Http\Controllers\api\EnderecoController::class, 'destroy']);
 
-
+//Buscar Pedido
 Route::get('/buscarNomeProdutoEmpresa/{nome}/{latitude}/{longitude}/', [App\Http\Controllers\api\ProdutoEmpresaController::class, 'buscaNome']);
 Route::get('/buscarCategoriaProdutoEmpresa/{categoria}/{latitude}/{longitude}/', [App\Http\Controllers\api\ProdutoEmpresaController::class, 'buscaCategoria']);
 Route::get('/buscarPreco/{valorinicial}/{valorterminal}/{latitude}/{longitude}/', [App\Http\Controllers\api\ProdutoEmpresaController::class, 'buscaPreco']);
 
-
+//Categoria
 Route::get('/buscarCategorias', [App\Http\Controllers\api\CategoriaController::class, 'index']);
