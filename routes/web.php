@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\FormSubmitted;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,18 @@ use Illuminate\Support\Facades\Route;
 
  Route::get('/dashboard', function () {
         return view('dashboard');
+    });
+    Route::get('/test', function () {
+        return view('test.test');
+    });
+    Route::get('/sender', function () {
+        return view('test.sender');
+    });
+    Route::post('/sender', function () {
+        //This is the post
+        $text = request()->input('content');
+        $for_user_id = request()->input('for_user_id');
+        event(new FormSubmitted($text,$for_user_id));
     });
 Route::get('/teste', [App\Http\Controllers\GatewayPagamentoController::class, 'teste'])->name('g.teste');
 

@@ -208,4 +208,16 @@ var config = {
 		};
 
     </script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script> // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('45ecad701a708b4980e9', {
+          cluster: 'us2'
+        });
+
+        var channel = pusher.subscribe('notification-channel_{{ Auth::id() }}');
+        channel.bind('my-event', function(data) {
+          alert(JSON.stringify(data));
+        }); </script>
 @stop
