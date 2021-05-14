@@ -32,7 +32,7 @@
                             <td>{{ $empresa->email }}</td>
                             <td>{{ $empresa->estado }}</td>
                             <td>{{ $empresa->municipio }}</td>
-                            <td><a href="{{ route('empresa.editar', $empresa->idempresa) }}"><i
+                            <td><a href="{{ route('empresa.update', $empresa->idempresa) }}"><i
                                         class="fas fa-user-edit"></i></a> <a class="deletar"
                                     data-id="{{ $empresa->idempresa }}"
                                     data-nomeempresa="{{ $empresa->nomeEmpresa }}"><i class="fas fa-user-times"></i></a>

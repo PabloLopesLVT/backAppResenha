@@ -260,6 +260,14 @@ return [
             'can' => 'empresa'
         ],
         [
+            'text'        => 'Dados Bancários',
+            'url'         => 'bank-account',
+            'icon'        => 'fas fa-money-check-alt',
+            'label'       => null,
+            'label_color' => 'success',
+            'can' => 'empresa'
+        ],
+        [
             'text'        => 'Categoria do Produto',
             'url'         => 'listarCategoria',
             'icon'        => 'fas fa-filter',
@@ -277,7 +285,7 @@ return [
         ],
         [
             'text'        => 'Empresas',
-            'url'         => 'listarEmpresa',
+            'url'         => 'empresa',
             'icon'        => 'far fa-building',
             'label'       => null,
             'label_color' => 'success',

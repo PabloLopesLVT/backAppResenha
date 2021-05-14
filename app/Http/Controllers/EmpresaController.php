@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Empresa;
 use App\Models\Endereco;
+use App\Models\LegalRepresentative;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class EmpresaController extends Controller
         return view('empresa.create', compact('enderecos'));
     }
 
-    public function editar($id){
+    public function update($id){
         $empresa = Empresa::find($id);
         $endereco = Endereco::find($empresa->endereco_id);
 
@@ -35,13 +36,9 @@ class EmpresaController extends Controller
 
     public function editarUnica(){
 
-
         $user = DB::table('users')->where('id', Auth::id())->get();
-
         $empresa = Empresa::find($user[0]->empresa_id);
-
         $endereco = Endereco::find($empresa->endereco_id);
-
         return view('perfilEmpresa.editar', ['empresa' => $empresa, 'endereco' => $endereco]);
     }
 
@@ -136,7 +133,8 @@ class EmpresaController extends Controller
         $status = "";
         $msg = "";
         $endereco = new Endereco();
-       // dd($request);
+        $legalR = new LegalRepresentative();
+
 
         if ($request->id == '') {
 
@@ -168,9 +166,22 @@ class EmpresaController extends Controller
             $empresa->cnpj = $request->input('cnpj');
             $empresa->endereco_id = $endereco->id;
 
-            $salvar = $empresa->save();
+            $salvarEmpresa = $empresa->save();
 
-            if($salvar){
+            if($salvarEmpresa){
+                $lastIdEmpresa  = DB::table('empresas')->orderBy('id', 'desc')->first();
+
+
+                $this->validate($request, $legalR->rules());
+                $legalR->empresa_id = $lastIdEmpresa->id;
+                $legalR->name = $request->input('name');
+                $legalR->document = $request->input('document');
+                $legalR->birthDate = $request->input('birthDate');
+                $legalR->motherName = $request->input('motherName');
+                $legalR->type = $request->input('type');
+                $salvarLegalR = $legalR->save();
+
+
                 $status = "success";
                 $msg = "Registro salvo com sucesso!";
             }else{
@@ -216,6 +227,7 @@ class EmpresaController extends Controller
      ->get();
         return view('empresa.listar', compact('empresas'), ['msg' => $msg, 'status' => $status]);
     }
+
 
     public function destroy($id)
     {

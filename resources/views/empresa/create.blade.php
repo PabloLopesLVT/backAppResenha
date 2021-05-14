@@ -60,13 +60,59 @@
 
                 <small>ATENÇÃO: Os dados de acesso a plataforma serão enviados para o e-mail informado.</small>
             </div>
+            <div class="row shadow p-3 mb-5 bg-white rounded">
+                <div class="font-weight-bold mb-4 p-2 h5 col-12">Representante Legal</div>
+                <div class="col-12 col-md-4">
+                    <div class="form-group">
+                        <label for="documentRepresentante">CPF</label>
+                        <input type="text" value="{{ $legalRepresentative->document ?? old('document') }}" class="form-control" id="cnpj"
+                               name="document" placeholder="000.000.000-00" required>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="form-group">
+                        <label for="name">Nome do Representante Legal</label>
+                        <input type="text" value="{{ $legalRepresentative->name ?? old('razaoSocial') }}" class="form-control"
+                               id="name" name="name"  required>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="form-group">
+                        <label for="birthDate">Data de Nascimento</label>
+                        <input type="date" value="{{ $legalRepresentative->birthDate ?? old('nomeEmpresa') }}" class="form-control"
+                               id="birthDate" name="birthDate"  placeholder="00/00/0000" required>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="form-group">
+                        <label for="motherName">Nome da Mãe</label>
+                        <input type="text" value="{{ $legalRepresentative->motherName ?? old('responsavel') }}" class="form-control"
+                               id="motherName" name="motherName" placeholder="Nome completo da Mãe" required>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="form-group">
+                        <label for="type">Tipo</label>
+                        <select name="type" class="form-control">
+                            <option value="INDIVIDUAL">Individual</option>
+                            <option value="ATTORNEY">Procurador</option>
+                            <option value="DESIGNEE">Mandatário</option>
+                            <option value="DIRECTOR">Diretor</option>
+                            <option value="PRESIDENT">Presidente</option>
 
+                        </select>
+                    </div>
+                </div>
+
+
+                <small>ATENÇÃO: Os dados de Representante Legal devem ser conferidos.</small>
+            </div>
             <div class="row shadow p-3 mb-5 bg-white rounded">
                 <div class="col-12  font-weight-bold mb-4 p-2 h5">Endereço da Empresa</div>
                 <div class="col-12 ">
                     <div class="form-group">
                         <label for="address">Endereço Completo</label>
-                        <input type="text" class="form-control" id="address" name="address" required>
+                        <input type="text" class="form-control" id="address" name="address" >
                     </div>
                 </div>
                 <div class="col-12 col-md-2">

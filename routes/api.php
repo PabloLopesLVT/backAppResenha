@@ -67,3 +67,5 @@ Route::get('/buscarPreco/{valorinicial}/{valorterminal}/{latitude}/{longitude}/'
 
 //Categoria
 Route::get('/buscarCategorias', [App\Http\Controllers\api\CategoriaController::class, 'index']);
+
+
