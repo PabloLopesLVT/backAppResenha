@@ -41,7 +41,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //Company
 Route::apiResource('empresa', 'App\Http\Controllers\EmpresaController');
-    Route::get('/createEmpresa', [App\Http\Controllers\EmpresaController::class, 'create'])->name('empresa.create');
+//Link Criar Nova Empresa
+Route::get('/createEmpresa', [App\Http\Controllers\EmpresaController::class, 'create'])->name('empresa.create');
+//Deletar via AJAX
+Route::get('/deletarEmpresa/{id}', [App\Http\Controllers\EmpresaController::class, 'destroy'])->name('empresa.destroy');
 
 
 //Create
@@ -99,6 +102,18 @@ Route::group(['middleware' => ['auth:web'] ], function(){
     Route::get('/', function () {
         return view('dashboard');
     });
+    Route::put('/editarEmpresaUnica/{id}', [App\Http\Controllers\EmpresaController::class, 'updateUnica'])->name('empresa.updateUnica');
+
+    //Company Member
+
+    Route::apiResource('company-member', 'App\Http\Controllers\CompanyMemberController');
+    //Deletar via AJAX
+    Route::get('/deletarCompanyMember/{id}', [App\Http\Controllers\CompanyMemberController::class, 'destroy'])->name('company-member.destroy');
+
+    Route::get('company-member-create', function (){
+        return view('companyMember.create');
+    })->name('company-member.create');
+
     //Bank Account
     Route::apiResource('bank-account', 'App\Http\Controllers\BankAccountController');
     Route::get('bank-accountCreate', function (){

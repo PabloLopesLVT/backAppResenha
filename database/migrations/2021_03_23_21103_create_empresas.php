@@ -28,7 +28,6 @@ class CreateEmpresas extends Migration
             $table->float('monthlyIncomeOrRevenue'); // Renda mensal ou receita. Obrigatório para PF e PJ.
             $table->string('cnae'); // Campo destinado ao CNAE(Classificação Nacional de Atividades Econômicas) da empresa. Obrigatório para PJ.
             $table->string('establishmentDate'); // Data de abertura da empresa. Obrigatório para PJ.
-            $table->boolean('pep'); // Define se o cadastro pertence a uma pessoa politicamente exposta.
 
 
             $table->unsignedBigInteger('endereco_id')->unsigned() ;

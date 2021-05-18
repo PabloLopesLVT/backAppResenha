@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BusinessArea;
 use App\Models\Empresa;
 use App\Models\Endereco;
 use App\Models\LegalRepresentative;
+use App\Models\TypeCompany;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 class EmpresaController extends Controller
 {
     public function index(){
-        $empresa = new Empresa();
+
         $empresas = DB::table('empresas AS e')
         ->select('e.id AS idempresa', 'e.nomeEmpresa', 'e.email', 'e.cnpj','e.responsavel','e.razaoSocial','e.celular', 'enderecos.logradouro', 'enderecos.municipio', 'enderecos.estado')
         ->join('enderecos', 'e.endereco_id', '=', 'enderecos.id')
@@ -24,14 +27,101 @@ class EmpresaController extends Controller
     public function create(){
         $endereco = new Endereco();
         $enderecos = $endereco::all();
-        return view('empresa.create', compact('enderecos'));
+        $businessArea = new BusinessArea();
+        $typeCompany = new TypeCompany();
+        $businessAreas = $businessArea->getBusinessArea();
+        $businessAreas = $businessAreas->getOriginalContent()["dados"]->_embedded->businessAreas;
+        $typeCompany = $typeCompany->getTypeCompany();
+        $typeCompanys = $typeCompany->getOriginalContent()["dados"]->companyTypes;
+
+        return view('empresa.create', compact('enderecos', 'businessAreas','typeCompanys'));
+    }
+    public function updateUnica(Request $request, $id){
+        $endereco  = Endereco::find($request->input('idendereco'));
+        $endereco->logradouro = $request->input('logradouro');
+        $endereco->numero = $request->input('numero');
+        $endereco->bairro = $request->input('bairro');
+        $endereco->cep = $request->input('cep');
+        $endereco->municipio = $request->input('municipio');
+        $endereco->estado = $request->input('estado');
+        $endereco->complemento = $request->input('complemento');
+        $endereco->observacoes = $request->input('observacoes');
+        $endereco->latitude = $request->input('latitude');
+        $endereco->longitude = $request->input('longitude');
+        $salvar  = $endereco->save();
+
+        $empresa  = Empresa::find($request->input('id'));
+        $empresa->nomeEmpresa = $request->input('nomeEmpresa');
+        $empresa->email = $request->input('email');
+        $empresa->celular = $request->input('telefone');
+        $empresa->razaoSocial = $request->input('razaoSocial');
+        $empresa->responsavel = $request->input('responsavel');
+        $empresa->cnpj = $request->input('cnpj');
+        $empresa->businessArea = $request->input('businessArea');
+        $empresa->linesOfBusiness = $request->input('linesOfBusiness');
+        $empresa->companyType =$request->input('typeCompany');;
+        $empresa->monthlyIncomeOrRevenue =  str_replace(['.',','],'',  $request->input('monthlyIncomeOrRevenue'));
+        $empresa->cnae = $request->input('cnae');
+        $empresa->establishmentDate = $request->input('establishmentDate');
+        $empresa->endereco_id = $request->input('idendereco');
+
+        $update = $empresa->update();
+        if($update){
+            $status = "success";
+            $msg = "Atualização realizada com sucesso!";
+        }else{
+            $status = "danger";
+            $msg = "Houve um erro na atualização dos dados!";
+        }
+        $empresas = DB::table('empresas AS e')
+            ->select('e.id AS idempresa', 'e.nomeEmpresa', 'e.email', 'e.cnpj','e.responsavel','e.razaoSocial','e.celular', 'enderecos.logradouro', 'enderecos.municipio', 'enderecos.estado')
+            ->join('enderecos', 'e.endereco_id', '=', 'enderecos.id')
+            ->get();
+            return view('dashboard', compact('empresas'), ['msg' => $msg, 'status' => $status]);
     }
 
-    public function update($id){
-        $empresa = Empresa::find($id);
-        $endereco = Endereco::find($empresa->endereco_id);
+    public function update(Request $request, $id){
+        $endereco  = Endereco::find($request->input('idendereco'));
+        $endereco->logradouro = $request->input('logradouro');
+        $endereco->numero = $request->input('numero');
+        $endereco->bairro = $request->input('bairro');
+        $endereco->cep = $request->input('cep');
+        $endereco->municipio = $request->input('municipio');
+        $endereco->estado = $request->input('estado');
+        $endereco->complemento = $request->input('complemento');
+        $endereco->observacoes = $request->input('observacoes');
+        $endereco->latitude = $request->input('latitude');
+        $endereco->longitude = $request->input('longitude');
+        $salvar  = $endereco->save();
 
-        return view('empresa.create', ['empresa' => $empresa, 'endereco' => $endereco]);
+        $empresa  = Empresa::find($request->input('id'));
+        $empresa->nomeEmpresa = $request->input('nomeEmpresa');
+        $empresa->email = $request->input('email');
+        $empresa->celular = $request->input('telefone');
+        $empresa->razaoSocial = $request->input('razaoSocial');
+        $empresa->responsavel = $request->input('responsavel');
+        $empresa->cnpj = $request->input('cnpj');
+        $empresa->businessArea = $request->input('businessArea');
+        $empresa->linesOfBusiness = $request->input('linesOfBusiness');
+        $empresa->companyType =$request->input('typeCompany');;
+        $empresa->monthlyIncomeOrRevenue =  str_replace(['.',','],'',  $request->input('monthlyIncomeOrRevenue'));
+        $empresa->cnae = $request->input('cnae');
+        $empresa->establishmentDate = $request->input('establishmentDate');
+        $empresa->endereco_id = $request->input('idendereco');
+
+        $update = $empresa->update();
+        if($update){
+            $status = "success";
+            $msg = "Atualização realizada com sucesso!";
+        }else{
+            $status = "danger";
+            $msg = "Houve um erro na atualização dos dados!";
+        }
+        $empresas = DB::table('empresas AS e')
+            ->select('e.id AS idempresa', 'e.nomeEmpresa', 'e.email', 'e.cnpj','e.responsavel','e.razaoSocial','e.celular', 'enderecos.logradouro', 'enderecos.municipio', 'enderecos.estado')
+            ->join('enderecos', 'e.endereco_id', '=', 'enderecos.id')
+            ->get();
+        return view('empresa.listar', compact('empresas'), ['msg' => $msg, 'status' => $status]);
     }
 
     public function editarUnica(){
@@ -39,94 +129,16 @@ class EmpresaController extends Controller
         $user = DB::table('users')->where('id', Auth::id())->get();
         $empresa = Empresa::find($user[0]->empresa_id);
         $endereco = Endereco::find($empresa->endereco_id);
-        return view('perfilEmpresa.editar', ['empresa' => $empresa, 'endereco' => $endereco]);
+        $legalRepresentative = LegalRepresentative::find($empresa->endereco_id);
+        $businessArea = new BusinessArea();
+        $typeCompany = new TypeCompany();
+        $businessAreas = $businessArea->getBusinessArea();
+        $businessAreas = $businessAreas->getOriginalContent()["dados"]->_embedded->businessAreas;
+        $typeCompany = $typeCompany->getTypeCompany();
+        $typeCompanys = $typeCompany->getOriginalContent()["dados"]->companyTypes;
+        return view('perfilEmpresa.editar',compact('businessAreas', 'typeCompanys'), ['empresa' => $empresa, 'endereco' => $endereco, 'legalRepresentative' => $legalRepresentative]);
     }
 
-    public function storeUnica(Request $request){
-
-        $empresa = new Empresa();
-        $status = "";
-        $msg = "";
-        $endereco = new Endereco();
-       // dd($request);
-
-        if ($request->id == '') {
-
-            $request->validate([
-                'nomeEmpresa' => 'required',
-                'email' => 'required|email|unique:empresas',
-                'cnpj' => 'required|cnpj|unique:empresas',
-            ]);
-            $endereco->logradouro = $request->input('logradouro');
-            $endereco->numero = $request->input('numero');
-            $endereco->bairro = $request->input('bairro');
-            $endereco->cep = $request->input('cep');
-            $endereco->municipio = $request->input('municipio');
-            $endereco->estado = $request->input('estado');
-            $endereco->complemento = $request->input('complemento');
-            $endereco->observacoes = $request->input('observacoes');
-
-            $salvar  = $endereco->save();
-
-            if($salvar){
-
-            $endereco  = DB::table('enderecos')->orderBy('id', 'desc')->first();
-            $empresa->nomeEmpresa = $request->input('nomeEmpresa');
-            $empresa->email = $request->input('email');
-            $empresa->celular = $request->input('telefone');
-            $empresa->razaoSocial = $request->input('razaoSocial');
-            $empresa->responsavel = $request->input('responsavel');
-            $empresa->cnpj = $request->input('cnpj');
-            $empresa->endereco_id = $endereco->id;
-
-            $salvar = $empresa->save();
-
-            if($salvar){
-                $status = "success";
-                $msg = "Registro salvo com sucesso!";
-            }else{
-                $status = "danger";
-                $msg = "Houve erro ao salvar o registro!";
-            }
-        }
-        }else{
-            $endereco  = Endereco::find($request->input('idendereco'));
-            $endereco->logradouro = $request->input('logradouro');
-            $endereco->numero = $request->input('numero');
-            $endereco->bairro = $request->input('bairro');
-            $endereco->cep = $request->input('cep');
-            $endereco->municipio = $request->input('municipio');
-            $endereco->estado = $request->input('estado');
-            $endereco->complemento = $request->input('complemento');
-            $endereco->observacoes = $request->input('observacoes');
-            $salvar  = $endereco->save();
-
-            $empresa  = Empresa::find($request->input('id'));
-            $empresa->nomeEmpresa = $request->input('nomeEmpresa');
-            $empresa->email = $request->input('email');
-            $empresa->celular = $request->input('telefone');
-            $empresa->razaoSocial = $request->input('razaoSocial');
-            $empresa->responsavel = $request->input('responsavel');
-            $empresa->cnpj = $request->input('cnpj');
-            $empresa->endereco_id = $request->input('idendereco');
-
-            $update = $empresa->update();
-            if($update){
-                $status = "success";
-                $msg = "Atualização realizada com sucesso!";
-            }else{
-                $status = "danger";
-                $msg = "Houve um erro na atualização dos dados!";
-            }
-     }
-     $user = DB::table('users')->where('id', Auth::id())->get();
-
-     $empresa = Empresa::find($user[0]->empresa_id);
-
-     $endereco = Endereco::find($empresa->endereco_id);
-
-     return view('perfilEmpresa.editar', ['empresa' => $empresa, 'endereco' => $endereco, 'msg' => $msg, 'status' => $status]);
-    }
     public function store(Request $request){
 
         $empresa = new Empresa();
@@ -136,7 +148,6 @@ class EmpresaController extends Controller
         $legalR = new LegalRepresentative();
 
 
-        if ($request->id == '') {
 
             $request->validate([
                 'nomeEmpresa' => 'required',
@@ -164,6 +175,12 @@ class EmpresaController extends Controller
             $empresa->razaoSocial = $request->input('razaoSocial');
             $empresa->responsavel = $request->input('responsavel');
             $empresa->cnpj = $request->input('cnpj');
+            $empresa->businessArea = $request->input('businessArea');
+            $empresa->linesOfBusiness = $request->input('linesOfBusiness');
+            $empresa->companyType = $request->input('typeCompany');
+                $empresa->monthlyIncomeOrRevenue =  str_replace(['.',','],'',  $request->input('monthlyIncomeOrRevenue'));
+            $empresa->cnae = $request->input('cnae');
+            $empresa->establishmentDate = $request->input('establishmentDate');
             $empresa->endereco_id = $endereco->id;
 
             $salvarEmpresa = $empresa->save();
@@ -189,45 +206,26 @@ class EmpresaController extends Controller
                 $msg = "Houve erro ao salvar o registro!";
             }
         }
-        }else{
-            $endereco  = Endereco::find($request->input('idendereco'));
-            $endereco->logradouro = $request->input('logradouro');
-            $endereco->numero = $request->input('numero');
-            $endereco->bairro = $request->input('bairro');
-            $endereco->cep = $request->input('cep');
-            $endereco->municipio = $request->input('municipio');
-            $endereco->estado = $request->input('estado');
-            $endereco->complemento = $request->input('complemento');
-            $endereco->observacoes = $request->input('observacoes');
-            $endereco->latitude = $request->input('latitude');
-            $endereco->longetude = $request->input('longetude');
-            $salvar  = $endereco->save();
 
-            $empresa  = Empresa::find($request->input('id'));
-            $empresa->nomeEmpresa = $request->input('nomeEmpresa');
-            $empresa->email = $request->input('email');
-            $empresa->celular = $request->input('telefone');
-            $empresa->razaoSocial = $request->input('razaoSocial');
-            $empresa->responsavel = $request->input('responsavel');
-            $empresa->cnpj = $request->input('cnpj');
-            $empresa->endereco_id = $request->input('idendereco');
-
-            $update = $empresa->update();
-            if($update){
-                $status = "success";
-                $msg = "Atualização realizada com sucesso!";
-            }else{
-                $status = "danger";
-                $msg = "Houve um erro na atualização dos dados!";
-            }
-     }
      $empresas = DB::table('empresas AS e')
      ->select('e.id AS idempresa', 'e.nomeEmpresa', 'e.email', 'e.cnpj','e.responsavel','e.razaoSocial','e.celular', 'enderecos.logradouro', 'enderecos.municipio', 'enderecos.estado')
      ->join('enderecos', 'e.endereco_id', '=', 'enderecos.id')
      ->get();
         return view('empresa.listar', compact('empresas'), ['msg' => $msg, 'status' => $status]);
     }
+public  function show($id){
+    $empresa = Empresa::find($id);
+    $endereco = Endereco::find($empresa->endereco_id);
+    $legalRepresentative = LegalRepresentative::find($empresa->endereco_id);
+    $businessArea = new BusinessArea();
+    $typeCompany = new TypeCompany();
+    $businessAreas = $businessArea->getBusinessArea();
+    $businessAreas = $businessAreas->getOriginalContent()["dados"]->_embedded->businessAreas;
+    $typeCompany = $typeCompany->getTypeCompany();
+    $typeCompanys = $typeCompany->getOriginalContent()["dados"]->companyTypes;
 
+    return view('empresa.create', compact('businessAreas', 'typeCompanys'), ['empresa' => $empresa, 'endereco' => $endereco, 'legalRepresentative' => $legalRepresentative]);
+}
 
     public function destroy($id)
     {

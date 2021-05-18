@@ -241,126 +241,143 @@ return [
         ],
         [
             'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
+            'url' => 'admin/blog',
+            'can' => 'manage-blog',
         ],
         [
-            'text'        => 'Dashboard',
-            'url'         => 'dashboard',
-            'icon'        => 'fas fa-chart-pie',
-            'label'       => null,
+            'text' => 'Dashboard',
+            'url' => 'dashboard',
+            'icon' => 'fas fa-chart-pie',
+            'label' => null,
             'label_color' => 'success',
         ],
+
         [
-            'text'        => 'Perfil',
-            'url'         => 'editarEmpresaUnica',
-            'icon'        => 'fas fa-building',
-            'label'       => null,
-            'label_color' => 'success',
-            'can' => 'empresa'
+            'text' => 'Dados da Empresa',
+            'can' => 'empresa',
+            'icon' => 'fas fa-building',
+            'submenu' => [
+                [
+                    'text' => 'Perfil',
+                    'url' => 'editarEmpresaUnica',
+                    'label' => null,
+                    'icon' => '',
+                    'label_color' => 'success',
+                    'can' => 'empresa'
+                ],
+                [
+                    'text' => 'Dados Bancários',
+                    'url' => 'bank-account',
+                    'icon' => '',
+                    'label' => null,
+                    'label_color' => 'success',
+                    'can' => 'empresa'
+                ],
+                [
+                    'text' => 'Quadro Societário',
+                    'url' => 'company-member',
+                    'icon' => '',
+                    'label' => null,
+                    'label_color' => 'success',
+                    'can' => 'empresa'
+                ],
+            ]
         ],
+
         [
-            'text'        => 'Dados Bancários',
-            'url'         => 'bank-account',
-            'icon'        => 'fas fa-money-check-alt',
-            'label'       => null,
-            'label_color' => 'success',
-            'can' => 'empresa'
-        ],
-        [
-            'text'        => 'Categoria do Produto',
-            'url'         => 'listarCategoria',
-            'icon'        => 'fas fa-filter',
-            'label'       => null,
+            'text' => 'Categoria do Produto',
+            'url' => 'listarCategoria',
+            'icon' => 'fas fa-filter',
+            'label' => null,
             'label_color' => 'success',
             'can' => 'admin'
         ],
         [
-            'text'        => 'Meus Produtos',
-            'url'         => 'produtoEmpresa',
-            'icon'        => 'fas fa-lightbulb',
-            'label'       => null,
+            'text' => 'Meus Produtos',
+            'url' => 'produtoEmpresa',
+            'icon' => 'fas fa-lightbulb',
+            'label' => null,
             'label_color' => 'success',
             'can' => 'empresa'
         ],
         [
-            'text'        => 'Empresas',
-            'url'         => 'empresa',
-            'icon'        => 'far fa-building',
-            'label'       => null,
+            'text' => 'Empresas',
+            'url' => 'empresa',
+            'icon' => 'far fa-building',
+            'label' => null,
             'label_color' => 'success',
             'can' => 'admin'
         ],
 
         [
-            'text'        => 'Funcionários',
-            'url'         => 'listarFuncionario',
-            'icon'        => 'fas fa-id-badge',
-            'label'       => null,
+            'text' => 'Funcionários',
+            'url' => 'listarFuncionario',
+            'icon' => 'fas fa-id-badge',
+            'label' => null,
             'label_color' => 'success',
         ],
         [
-            'text'        => 'Produtos',
-            'url'         => 'listarProduto',
-            'icon'        => 'fas fa-lightbulb',
-            'label'       => null,
-            'label_color' => 'success',
-            'can' => 'admin'
-        ],
-        [
-            'text'        => 'Financeiro',
-            'url'         => 'financeiro',
-            'icon'        => 'fas fa-users',
-            'label'       => null,
+            'text' => 'Produtos',
+            'url' => 'listarProduto',
+            'icon' => 'fas fa-lightbulb',
+            'label' => null,
             'label_color' => 'success',
             'can' => 'admin'
         ],
         [
-            'text'        => 'Usuários',
-            'url'         => 'listarUsuario',
-            'icon'        => 'fas fa-user-tie',
-            'label'       => null,
+            'text' => 'Financeiro',
+            'url' => 'financeiro',
+            'icon' => 'fas fa-users',
+            'label' => null,
+            'label_color' => 'success',
+            'can' => 'admin'
+        ],
+        [
+            'text' => 'Usuários',
+            'url' => 'listarUsuario',
+            'icon' => 'fas fa-user-tie',
+            'label' => null,
             'label_color' => 'success',
 
         ],
         [
-            'text'        => 'Histórico Pedidos',
-            'url'         => 'historico',
-            'icon'        => 'fas fa-book',
-            'label'       => null,
+            'text' => 'Histórico Pedidos',
+            'url' => 'historico',
+            'icon' => 'fas fa-book',
+            'label' => null,
             'label_color' => 'success',
 
         ],
         [
-            'text'        => 'Pedidos Abertos',
-            'url'         => 'pedidosAbertos',
-            'icon'        => 'fas fa-book',
-            'label'       => null,
+            'text' => 'Pedidos Abertos',
+            'url' => 'pedidosAbertos',
+            'icon' => 'fas fa-book',
+            'label' => null,
             'label_color' => 'success',
         ],
         [
-            'text'        => 'Atendimento',
-            'url'         => 'atendimento',
-            'icon'        => 'fas fa-book',
-            'label'       => null,
+            'text' => 'Atendimento',
+            'url' => 'atendimento',
+            'icon' => 'fas fa-book',
+            'label' => null,
             'label_color' => 'success',
         ],
         [
             'header' => 'CONFIGURAÇÕES',
         ],
         [
-            'text'        => 'Configurações',
-            'url'         => 'configuracoes',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => null,
+            'text' => 'Configurações',
+            'url' => 'configuracoes',
+            'icon' => 'far fa-fw fa-file',
+            'label' => null,
             'label_color' => 'success',
             'can' => 'admin'
         ],
         [
-            'text'        => 'Sair',
-            'url'         => 'logout',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => null,
+            'text' => 'Sair',
+            'url' => 'logout',
+            'icon' => 'far fa-fw fa-file',
+            'label' => null,
             'label_color' => 'success',
         ],
 
@@ -542,16 +559,16 @@ return [
             ],
         ],
 
-    'GoogleAPI' => [
-        'active' => true,
-        'files' => [
-            [
-                'type' => 'js',
-                'asset' => true,
-                'location' => 'https://maps.googleapis.com/maps/api/js?key='.env("KEY_GOOGLE_API").'&libraries=places',
+        'GoogleAPI' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'https://maps.googleapis.com/maps/api/js?key=' . env("KEY_GOOGLE_API") . '&libraries=places',
+                ],
             ],
         ],
-    ],
         'JqueryMaskMoney' => [
             'active' => true,
             'files' => [
