@@ -129,7 +129,8 @@ class EmpresaController extends Controller
         $user = DB::table('users')->where('id', Auth::id())->get();
         $empresa = Empresa::find($user[0]->empresa_id);
         $endereco = Endereco::find($empresa->endereco_id);
-        $legalRepresentative = LegalRepresentative::find($empresa->endereco_id);
+        $legalRepresentative = DB::table('legal_representatives')->where('empresa_id', $user[0]->empresa_id)->get();
+
         $businessArea = new BusinessArea();
         $typeCompany = new TypeCompany();
         $businessAreas = $businessArea->getBusinessArea();
@@ -216,7 +217,7 @@ class EmpresaController extends Controller
 public  function show($id){
     $empresa = Empresa::find($id);
     $endereco = Endereco::find($empresa->endereco_id);
-    $legalRepresentative = LegalRepresentative::find($empresa->endereco_id);
+    $legalRepresentative = DB::table('legal_representatives')->where('empresa_id', $id)->get();
     $businessArea = new BusinessArea();
     $typeCompany = new TypeCompany();
     $businessAreas = $businessArea->getBusinessArea();
@@ -224,7 +225,7 @@ public  function show($id){
     $typeCompany = $typeCompany->getTypeCompany();
     $typeCompanys = $typeCompany->getOriginalContent()["dados"]->companyTypes;
 
-    return view('empresa.create', compact('businessAreas', 'typeCompanys'), ['empresa' => $empresa, 'endereco' => $endereco, 'legalRepresentative' => $legalRepresentative]);
+    return view('empresa.create', compact('businessAreas', 'typeCompanys'), ['empresa' => $empresa, 'endereco' => $endereco, 'legalRepresentative' => $legalRepresentative[0]]);
 }
 
     public function destroy($id)

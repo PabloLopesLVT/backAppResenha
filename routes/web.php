@@ -39,6 +39,11 @@ Route::group(['middleware' => ['auth:web', 'is_admin'] ], function(){
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+//Conta Digital
+
+    Route::get('/contaDigitalCreate/{id}', [App\Http\Controllers\ContaDigitalController::class, 'create'])->name('conta-digital.create');
+
+
 //Company
 Route::apiResource('empresa', 'App\Http\Controllers\EmpresaController');
 //Link Criar Nova Empresa
