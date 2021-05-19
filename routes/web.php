@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+ Route::get('/site', [App\Http\Controllers\Site\SiteController::class, 'index']);
+
  Route::get('/dashboard', function () {
         return view('dashboard');
     });
