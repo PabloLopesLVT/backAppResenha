@@ -20,6 +20,12 @@ class Empresa extends Model
         'email',
         'cnpj',
         'endereco_id',
-        'usuario_id'
+        'usuario_id',
+        'businessArea',
+        'linesOfBusiness',
+        'companyType',
+        'monthlyIncomeOrRevenue',
+        'cnae',
+        'establishmentDate'
     ];
 }

@@ -29,7 +29,27 @@ class GatewayPagamento extends Model
         $client_cledenctials = $this->getClientId(). ":" . $this->getClientSecret();
         return $client_cledenctials;
     }
+    public function getToken()
+    {
+        $gateway = new GatewayPagamento();
 
+        //Essa credencial é utilizada para obter o token JWT
+        $client_credentials = base64_encode($gateway->getClientId() . ":" . $gateway->getClientSecret());
+
+        //Requisição para obter o JWT
+        $ch = curl_init("https://sandbox.boletobancario.com/authorization-server/oauth/token");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Content-Type: application/x-www-form-urlencoded",
+            "Authorization: Basic {$client_credentials}"
+        ]);
+        $token = json_decode(curl_exec($ch));
+        $token = $token->access_token;
+        return $token;
+    }
 
 
 }

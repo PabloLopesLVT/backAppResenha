@@ -3,39 +3,35 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Lista de Empresas</h1>
+    <h1>Lista de Sócios</h1>
 @stop
 
 @section('content')
     <div class="container-fluid">
         <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
-        <a href="{{ route('empresa.create') }}" class="btn btn-block btn-primary mb-4 "><i class="far fa-building"></i>
-            Cadastrar Nova Empresa</a>
-        <table class="table table-hover table-striped" id="myTable">
+        <a href="{{ route('company-member.create') }}" class="btn btn-block btn-primary mb-4 "><i class="far fa-building"></i>
+            Cadastrar Novo Sócio</a>
+        <table class="table table-responsive-lg table-hover table-striped" id="myTable">
             <thead>
                 <tr>
-                    <th scope="col">nomeEmpresa</th>
-                    <th scope="col">cnpj</th>
-                    <th scope="col">email</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Cidade</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Documento</th>
+                    <th scope="col">Data de Nascimento</th>
                     <th scope="col">Ações</th>
 
                 </tr>
             </thead>
             <tbody>
-                @if ($empresas)
-                    @foreach ($empresas as $empresa)
+                @if ($companyMembers)
+                    @foreach ($companyMembers as $companyMember)
                         <tr>
-                            <td>{{ $empresa->nomeEmpresa }}</td>
-                            <td>{{ $empresa->cnpj }}</td>
-                            <td>{{ $empresa->email }}</td>
-                            <td>{{ $empresa->estado }}</td>
-                            <td>{{ $empresa->municipio }}</td>
-                            <td><a href="{{ route('empresa.update', $empresa->idempresa) }}"><i
+                            <td>{{ $companyMember->name }}</td>
+                            <td>{{ $companyMember->document }}</td>
+                            <td>{{ $companyMember->birthDate }}</td>
+                            <td><a href="{{ route('company-member.update', $companyMember->id) }}"><i
                                         class="fas fa-user-edit"></i></a> <a class="deletar"
-                                    data-id="{{ $empresa->idempresa }}"
-                                    data-nomeempresa="{{ $empresa->nomeEmpresa }}"><i class="fas fa-user-times"></i></a>
+                                    data-id="{{ $companyMember->id }}"
+                                    data-name="{{ $companyMember->name }}"><i class="fas fa-user-times"></i></a>
                             </td>
                         </tr>
                     @endforeach
@@ -67,17 +63,17 @@
 
         $('.deletar').click(function() {
             id = $(this).attr('data-id')
-            nomeEmpresa = $(this).attr('data-nomeempresa')
+            nameCompanyMember = $(this).attr('data-name')
             Swal.fire({
-                title: '<strong class="remove"> REMOVER EMPRESA </strong>',
-                html: `<div class="h5"> Você realmente deseja remover a empresa
+                title: '<strong class="remove"> REMOVER SÓCIO </strong>',
+                html: `<div class="h5"> Você realmente deseja remover o Sócio
                                                          <strong class=" text-dark h4 font-weight-bolder">
-                                                         ${nomeEmpresa}? </strong>
+                                                         ${nameCompanyMember}? </strong>
 
-                                                         <div class="mt-5">Digite o nome da empresa</div>
+                                                         <div class="mt-5">Digite o nome do Sócio</div>
                                                          </div>`,
                 showCancelButton: true,
-                confirmButtonText: 'REMOVER EMPRESA',
+                confirmButtonText: 'REMOVER SÓCIO',
                 confirmButtonColor: '#d33',
 
                 input: 'text',
@@ -88,21 +84,21 @@
             }).then((result) => {
                 console.log(result);
                 /* Read more about isConfirmed, isDenied below */
-                console.log(result.value === nomeEmpresa)
-                if (result.value === nomeEmpresa) {
+                console.log(result.value === nameCompanyMember)
+                if (result.value === nameCompanyMember) {
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
                     $.ajax({
-                        url: '/deletarEmpresa/' + id,
+                        url: '/deletarCompanyMember/' + id,
                         type: "get",
                         success: function(response) {
                             console.log(response)
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Empresa Apagada',
+                                title: 'Sócio Apagado',
                                 confirmButtonText: 'Ok',
                             }).then((result) => {
                                 location.reload();
@@ -116,8 +112,8 @@
                 } else if(result.dismiss === "cancel") {
                     console.log(result.value === "undefined")
 
-                }else if(result.value != nomeEmpresa){
-                    Swal.fire('Nome da empresa incorreto', '', 'error')
+                }else if(result.value != nameCompanyMember){
+                    Swal.fire('Nome do Sócio incorreto', '', 'error')
                 }
             })
 
