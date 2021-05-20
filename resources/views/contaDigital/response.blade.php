@@ -9,9 +9,8 @@
 @section('content')
 
         <div class="container-fluid">
-            <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
+            <div class="alert alert-{{ $status ?? '' }} ">{{ var_dump($msg, true) }}</div>
         </div>
-
 
 
     @if ($errors->any())

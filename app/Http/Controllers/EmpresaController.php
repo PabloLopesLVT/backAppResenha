@@ -137,7 +137,7 @@ class EmpresaController extends Controller
         $businessAreas = $businessAreas->getOriginalContent()["dados"]->_embedded->businessAreas;
         $typeCompany = $typeCompany->getTypeCompany();
         $typeCompanys = $typeCompany->getOriginalContent()["dados"]->companyTypes;
-        return view('perfilEmpresa.editar',compact('businessAreas', 'typeCompanys'), ['empresa' => $empresa, 'endereco' => $endereco, 'legalRepresentative' => $legalRepresentative]);
+        return view('perfilEmpresa.editar',compact('businessAreas', 'typeCompanys'), ['empresa' => $empresa, 'endereco' => $endereco, 'legalRepresentative' => $legalRepresentative[0]]);
     }
 
     public function store(Request $request){
@@ -230,6 +230,8 @@ public  function show($id){
 
     public function destroy($id)
     {
+
+
         $empresa = Empresa::find($id);
 
         try{
@@ -249,14 +251,11 @@ public  function show($id){
             $status = "danger";
             $msg = "Houve um erro na atualização dos dados!";
         }
-        $endereco = new Endereco();
-        $enderecos = $endereco::all();
-        $empresa = new Empresa();
+
         $empresas = DB::table('empresas AS e')
         ->select('e.id AS idempresa', 'e.nomeEmpresa', 'e.email', 'e.cnpj','e.responsavel','e.razaoSocial','e.celular', 'enderecos.logradouro', 'enderecos.municipio', 'enderecos.estado')
         ->join('enderecos', 'e.endereco_id', '=', 'enderecos.id')
         ->get();
-
         return view('empresa.listar', compact('empresas'), ['msg' => $msg, 'status' => $status]);
     }
 }

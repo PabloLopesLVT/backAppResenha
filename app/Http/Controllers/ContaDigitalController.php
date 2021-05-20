@@ -59,7 +59,7 @@ class ContaDigitalController extends Controller
             if($legalRepresentative->isEmpty() || $bankAccount->isEmpty()){
                 return view('contaDigital.response', ['msg' => 'Check novamente os Legal Representande e os dados Bancárcios']);
             }
-          dd($legalRepresentative);
+
 
         $legalRepresentative = $legalRepresentative[0];
         $bankAccount = $bankAccount[0];
@@ -148,7 +148,7 @@ class ContaDigitalController extends Controller
 
             $criarconta = json_decode(curl_exec($ch));
 
-            if ($criarconta->status == 200) {
+            if ($criarconta->status == 'AWAITING_DOCUMENTS') {
                 $contaDigital = new ContaDigital();
                 $contaDigital->empresa_id = $id;
                 $contaDigital->idConta = $criarconta->id;
@@ -159,10 +159,15 @@ class ContaDigitalController extends Controller
                 $contaDigital->createdOn = $criarconta->createdOn;
                 $contaDigital->resourceToken = $criarconta->resourceToken;
                 $contaDigital->accountNumber = $criarconta->accountNumber;
+                $contaDigital->link = $criarconta->_links->self->href;
                 $contaDigital->save();
                 return view('contaDigital.response', ['status' => $criarconta->status, 'msg' => 'Conta digital criada com sucesso!']);
-            } else {
-                return view('contaDigital.response', ['status' => $criarconta->status, 'msg' => $criarconta->details[0]->message, 'erroCode' => $criarconta->details[0]->errorCode]);
+
+            }else if($criarconta->status == 400){
+                return view('contaDigital.response', ['status' => $criarconta->status, 'msg' => $criarconta]);
+            }
+            else {
+                return view('contaDigital.response', ['status' => $criarconta->status, 'msg' => $criarconta]);
             }
         } else {
 
@@ -170,6 +175,7 @@ class ContaDigitalController extends Controller
 
         }
     }
+
 
     /**
      * Display a listing of the resource.

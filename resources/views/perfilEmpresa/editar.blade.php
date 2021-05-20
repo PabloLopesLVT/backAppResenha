@@ -105,7 +105,7 @@
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label for="establishmentDate">Data da Criação da Empresa</label>
-                        <input type="date" value="{{ $legalRepresentative->birthDate ?? old('nomeEmpresa') }}"
+                        <input type="date" value="{{ $legalRepresentative->birthDate ?? old('birthDate') }}"
                                class="form-control"
                                id="establishmentDate" name="establishmentDate" placeholder="00/00/0000" required>
                     </div>

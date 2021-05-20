@@ -46,13 +46,12 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
     Route::get('/contaDigitalCreate/{id}', [App\Http\Controllers\ContaDigitalController::class, 'create'])->name('conta-digital.create');
 
-
 //Company
 Route::apiResource('empresa', 'App\Http\Controllers\EmpresaController');
 //Link Criar Nova Empresa
 Route::get('/createEmpresa', [App\Http\Controllers\EmpresaController::class, 'create'])->name('empresa.create');
 //Deletar via AJAX
-Route::get('/deletarEmpresa/{id}', [App\Http\Controllers\EmpresaController::class, 'destroy'])->name('empresa.destroy');
+Route::delete('/deletarEmpresa/{id}', [App\Http\Controllers\EmpresaController::class, 'destroy'])->name('empresa.destroy');
 
 
 //Create
@@ -110,6 +109,10 @@ Route::group(['middleware' => ['auth:web'] ], function(){
     Route::get('/', function () {
         return view('dashboard');
     });
+
+    // Documentos da API da Juno
+    Route::apiResource('documento', 'App\Http\Controllers\DocumentoController');
+    //-----------------
     Route::put('/editarEmpresaUnica/{id}', [App\Http\Controllers\EmpresaController::class, 'updateUnica'])->name('empresa.updateUnica');
 
     //Company Member

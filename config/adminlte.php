@@ -281,6 +281,14 @@ return [
                     'label_color' => 'success',
                     'can' => 'empresa'
                 ],
+                [
+                    'text' => 'Documentos da Empresa',
+                    'url' => 'documento',
+                    'icon' => '',
+                    'label' => null,
+                    'label_color' => 'success',
+                    'can' => 'empresa'
+                ],
             ]
         ],
 

@@ -11,7 +11,7 @@ class GatewayPagamento extends Model
 
     //Private Token, na documentação ele se refere também como Token do recurso
     public function getPrivateToken(){
-        $PRIVATE_TOKEN = '645840F8738AEA87152A8DE98C088B5C94FF71560781F078489E0235CA5E70C8';
+        $PRIVATE_TOKEN = '645840F8738AEA8714C94284F554C2E8CDA8D474D3B4AEBF622F678AEB51AE68';
         return $PRIVATE_TOKEN;
     }
 

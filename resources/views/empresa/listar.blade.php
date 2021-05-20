@@ -32,10 +32,9 @@
                             <td>{{ $empresa->email }}</td>
                             <td>{{ $empresa->estado }}</td>
                             <td>{{ $empresa->municipio }}</td>
-                            <td><a href="{{ route('conta-digital.create', $empresa->idempresa) }}"><i class="fas fa-address-book"></i></a> <a href="{{ route('empresa.update', $empresa->idempresa) }}"><i
-                                        class="fas fa-user-edit"></i></a> <a class="deletar"
-                                    data-id="{{ $empresa->idempresa }}"
-                                    data-nomeempresa="{{ $empresa->nomeEmpresa }}"><i class="fas fa-user-times"></i></a>
+                            <td><a href="{{ route('conta-digital.create', $empresa->idempresa) }}"><i class="fas fa-address-book"></i></a>
+                                <a href="{{ route('empresa.update', $empresa->idempresa) }}"><i class="fas fa-user-edit"></i></a>
+                                <a class="deletar" data-id="{{ $empresa->idempresa }}" data-nomeempresa="{{ $empresa->nomeEmpresa }}"><i class="fas fa-user-times"></i></a>
                             </td>
                         </tr>
                     @endforeach
@@ -96,8 +95,8 @@
                         }
                     });
                     $.ajax({
-                        url: '/deletarEmpresa/' + id,
-                        type: "get",
+                        url: '{{ route ('empresa.destroy', $empresa->idempresa) }}',
+                        type: "delete",
                         success: function(response) {
                             console.log(response)
                             Swal.fire({
@@ -109,7 +108,7 @@
                             })
                         },
                         error: function(response) {
-                            console.error(response)
+                            console.error(response.responseText)
                             Swal.fire('Error!', '', 'danger')
                         }
                     })
