@@ -20,11 +20,8 @@ class PedidoController extends Controller
         foreach ($request->request as $req) {
             // this will check for array and check the array has 2 elements
             if (is_array($req) && is_array($req) == 2) {
-
-
                 $pedido = new Pedido();
                 try {
-
                     $pedido->produto_empresa_id = $req['produto_empresa_id'];
                     $pedido->empresa_id = $req['empresa_id'];
                     $pedido->usuario_id = $req['usuario_id'];

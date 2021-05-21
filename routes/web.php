@@ -109,7 +109,15 @@ Route::group(['middleware' => ['auth:web'] ], function(){
     Route::get('/', function () {
         return view('dashboard');
     });
+    //Consultar Conta digital
+    Route::get('/consultarContaDigital', [App\Http\Controllers\ContaDigitalController::class, 'consultar'])->name('conta-digital.consultar');
 
+
+    // Enviar documentos
+    Route::post('/documentoEnviar/', [App\Http\Controllers\DocumentoController::class, 'upload'])->name('documento.upload');
+    Route::get('documento-enviar/{id}/{type}/{description}', function (){
+        return view('documento.enviar');
+    })->name('documento.enviar');
     // Documentos da API da Juno
     Route::apiResource('documento', 'App\Http\Controllers\DocumentoController');
     //-----------------

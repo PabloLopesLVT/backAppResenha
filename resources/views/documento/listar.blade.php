@@ -3,14 +3,12 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Enviar Documentos</h1>
+    <h1>Lista de Documentos</h1>
 @stop
 
 @section('content')
     <div class="container">
         <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
-
-        <a href="{{ route ('endereco.create')}}" class="btn btn-primary mb-4 "><i class="fas fa-user-plus"></i></a>
         <table class="table table-hover" id="myTable">
             <thead>
             <tr>
@@ -30,7 +28,10 @@
                         <td>{{ $documento->description}}</td>
                         <td>{{ $documento->approvalStatus }}</td>
 
-                        <td></td>
+                        <td>
+                            <a href="/documento-enviar/{{ $documento->id }}/{{ $documento->type }}/{{ $documento->description}}" class=" uploadArquivo btn btn-primary"><i class="fas fa-upload"></i>
+                            </a>
+                        </td>
                     </tr>
                 @endforeach
             @endif

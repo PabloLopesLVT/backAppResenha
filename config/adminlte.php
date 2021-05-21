@@ -289,6 +289,14 @@ return [
                     'label_color' => 'success',
                     'can' => 'empresa'
                 ],
+                [
+                    'text' => 'Consultar Conta Digital',
+                    'url' => 'consultarContaDigital',
+                    'icon' => '',
+                    'label' => null,
+                    'label_color' => 'success',
+                    'can' => 'empresa'
+                ],
             ]
         ],
 

@@ -3,29 +3,32 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <div class="rounded bg-warning font-weight-bold mb-4 p-2 h5">Cadastrar Produto</div>
+    <div class="rounded bg-warning font-weight-bold mb-4 p-2 h5">Enviar Documento</div>
 
 @stop
 
 @section('content')
-    <form method="POST" action={{ route('produto.store') }} enctype="multipart/form-data">
+    <form method="POST" action={{ route('documento.upload') }} enctype="multipart/form-data">
         @csrf
-        <input type="hidden" name="id" value="{{ $produto->id ?? '' }}">
+
         <div class="container-fluid ">
-            <div class="alert alert-{{ $status ?? '' }} ">{{ $msg ?? '' }}</div>
+
+            <div class="alert alert-{{ Session::get('status') }} ">{{ Session::get('msg') }}</div>
+
+
             <div class="row shadow p-3 mb-5 bg-white rounded">
-                <div class="font-weight-bold mb-4 p-2 h5 col-12">Dados do Produto</div>
+                <div class="font-weight-bold mb-4 p-2 h5 col-12">Documento</div>
                 <div class="col-md-3">
                     <div class="form-group mx-auto text-center">
                         <input type="file" id="cropped_image3" class="image">
                         <img id="cropped_image2" width="200" src="{{ asset('img/Produto-sem-Imagem-por-Enquanto.jpg') }}"
-                            class="image  mx-auto">
+                             class="image  mx-auto">
                         <input type="hidden" id="cropped_image4" name="imagem" class="image">
                         <label for='cropped_image3' class=" mt-3 btn btn-success  text-center"
-                            id="label_seleciona_arquivo">Adicionar
+                               id="label_seleciona_arquivo">Adicionar
                             Imagem</label>
                         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
-                            aria-hidden="true">
+                             aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -57,41 +60,13 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" name="iddocumento" value="{{$segment = Request::segment(2)}}" />
                 <div class="col-md-6">
-                    <div class="col-12 ">
-                        <div class="form-group">
-                            <label for="nome">Nome</label>
-                            <input type="text" value="{{ $produto->nome ?? old('nome') }}" class="form-control" id="nome"
-                                name="nome" placeholder="Nome do Produto" required>
-                        </div>
-                    </div>
-                    <div class="col-12 ">
-                        <div class="form-group">
-                            <label for="marca">Marca</label>
-                            <input type="text" value="{{ $produto->marca ?? old('marca') }}" class="form-control"
-                                id="marca" name="marca" placeholder="Marca do Produto" required>
-                        </div>
-                    </div>
-                    <div class="col-12 ">
-                        <div class="form-group">
-                            <label for="status">Ativo</label>
-                            <select class="form-control" name="status">
-                                <option value="1">Ativo</option>
-                                <option value="0">Desativado</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-12 ">
-                        <div class="form-group">
-                            <label for="categoria">Categoria</label>
-                            <select class="form-control" name="categoria" required>
-                                <option value="">Selecione</option>
-                                @foreach ($categorias as $categoria)
-                                    <option value="{{ $categoria->id }}">{{ $categoria->nome }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+                    <div>Protocolo: {{$segment = Request::segment(2)}}</div>
+                    <div>Documento: {{$segment = Request::segment(3)}}</div>
+                    <div>Descrição: {{$segment = Request::segment(4)}}</div>
+                    <div class="bg-warning p-2 font-weight-bold text-center">Extensões de arquivos aceitas: <br> pdf, doc, docx, jpg, jpeg, png, bpm, tiff.</div>
+
                 </div>
 
             </div>

@@ -10,6 +10,7 @@ use App\Models\Endereco;
 use App\Models\GatewayPagamento;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ContaDigitalController extends Controller
@@ -176,7 +177,30 @@ class ContaDigitalController extends Controller
         }
     }
 
+    public function consultar()
+    {
+        $gateway = new GatewayPagamento();
+        $empresa_id = DB::table('users')->where('id', Auth::id())->get();
+        $contaDigital = DB::table('conta_digitais')->where('empresa_id', $empresa_id[0]->empresa_id)->get();
+        //Essa credencial é utilizada para obter o token JWT
 
+        //Requisição para obter o JWT
+        $ch = curl_init("https://sandbox.boletobancario.com/api-integration/digital-accounts");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Content-Type: application/json;charset=UTF-8",
+            "X-Api-Version:  2",
+            "X-Resource-Token:  {$contaDigital[0]->resourceToken}",
+            "Authorization: Bearer {$gateway->getToken()}",
+
+        ]);
+        $contadigital = json_decode(curl_exec($ch));
+
+
+        return view('contaDigital.response', ['msg' => $contadigital]);
+
+    }
     /**
      * Display a listing of the resource.
      *
