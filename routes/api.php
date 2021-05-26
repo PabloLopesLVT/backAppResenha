@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth:api'], function(){
 
         return "Olá mundo API (Autenticado)";
     });
+
     Route::get('/logout', [LoginController::class, 'logout']);
 
 
@@ -45,6 +46,7 @@ Route::group(['middleware' => 'auth:api'], function(){
 
 });
 Route::post('/tokenizar', [App\Http\Controllers\PagamentoController::class, 'tokenizar']);
+Route::post('/efetuar-pagamento', [App\Http\Controllers\PagamentoController::class, 'efetuarPagamento']);
 
 //Criar pedido
 Route::post('/criarPedido', [App\Http\Controllers\api\PedidoController::class, 'criarPedido']);

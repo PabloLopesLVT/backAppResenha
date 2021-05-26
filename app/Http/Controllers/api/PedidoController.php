@@ -109,6 +109,7 @@ class PedidoController extends Controller
                       "teste", "teste", //Isso aqui tem que ser igual ao número de parcelas
                   ),*/
                 "totalAmount" => $totalAmount,
+                //"amount" => $totalAmount,
                 // "dueDate" => $cob->getDueDate(), //Data de Pagamento
                 "installments" => 2, //Número de parcelas
                 //    "maxOverdueDays" => $cob->getMaxOverdueDays(),
@@ -166,6 +167,7 @@ class PedidoController extends Controller
 
         ]);
         $cobranca = json_decode(curl_exec($ch));
+        dd($cobranca);
         $array = $cobranca->_embedded->charges;
         $cobrancaModel = new Cobranca();
 
