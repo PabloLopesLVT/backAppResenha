@@ -21,6 +21,7 @@ class CreateUsuarios extends Migration
             $table->string('cpf')->unique();
             $table->integer('tipo');
 
+
             $table->timestamps();
             //Constrain
 

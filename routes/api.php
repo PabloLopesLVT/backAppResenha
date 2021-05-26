@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth:api'], function(){
 
 
 });
+Route::post('/tokenizar', [App\Http\Controllers\PagamentoController::class, 'tokenizar']);
 
 //Criar pedido
 Route::post('/criarPedido', [App\Http\Controllers\api\PedidoController::class, 'criarPedido']);

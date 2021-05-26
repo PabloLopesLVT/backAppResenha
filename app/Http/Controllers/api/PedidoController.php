@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cobranca;
 use App\Models\Endereco;
 use App\Models\GatewayPagamento;
 use App\Models\Pedido;
@@ -48,11 +49,11 @@ class PedidoController extends Controller
 
     public function criarPedido(Request $request)
     {
-
         $gateway = new GatewayPagamento();
         $uuid = Uuid::uuid4();
         $msg = "Pedido feito com sucesso!";
         $valorTotaldoPedido = 0; // Valor total do pedido
+        $valorDoAPP = 0;
         foreach ($request->request as $req) {
 
             $pedido = new Pedido();
@@ -64,20 +65,21 @@ class PedidoController extends Controller
                 $pedido->status = $req['status'];
                 $pedido->quantidade = $req['quantidade'];
                 $pedido->identificacao_pedido = $uuid;
-                $pedido->save();
+                $salvar = $pedido->save();
+
                 $usuario = $req['usuario_id'];
                 $contaDigital = DB::table('conta_digitais')->where('empresa_id', $req['empresa_id'])->get();
 
-                $subtotal = $req['valor'] * $req['quantidade'];
+                $subtotal = $req['valor'] * $req['quantidade'] - 3;
                 $s[] = array(
 
-                        "recipientToken" => $contaDigital[0]->resourceToken,
-                        "amount" => $subtotal ,
-                        "amountRemainder" => false,
-                        "chargeFee" => true
+                    "recipientToken" => $contaDigital[0]->resourceToken,
+                    "amount" => $subtotal,
+                    "amountRemainder" => false,
+                    "chargeFee" => true
 
-                    );
-
+                );
+                $valorDoAPP = $valorDoAPP + 6;
                 $valorTotaldoPedido = $valorTotaldoPedido + $subtotal;
 
             } catch (\Illuminate\Database\QueryException $e) {
@@ -85,16 +87,20 @@ class PedidoController extends Controller
             }
 
         }
+
         //Juno com a conta oficil do dono do app
         //Inserindo o token dele para ele pegar a fatia
         $s[] = array(
             "recipientToken" => $this->getToken(),
-            "amount" => 6,
+            "amount" => $valorDoAPP,
             "amountRemainder" => true,
             "chargeFee" => true
         );
         //---------------------------------------
-       // var_dump($s);
+        // var_dump($s);
+        $totalAmount = $valorTotaldoPedido + $valorDoAPP;
+
+
         $charge = array(
             "charge" => array(
                 //  "pixKey" => $cob->getPixkye(),
@@ -102,9 +108,9 @@ class PedidoController extends Controller
                 /*  "references" => array(
                       "teste", "teste", //Isso aqui tem que ser igual ao número de parcelas
                   ),*/
-                "totalAmount" => $valorTotaldoPedido,
+                "totalAmount" => $totalAmount,
                 // "dueDate" => $cob->getDueDate(), //Data de Pagamento
-                "installments" => 1, //Número de parcelas
+                "installments" => 2, //Número de parcelas
                 //    "maxOverdueDays" => $cob->getMaxOverdueDays(),
                 //   "fine" => $cob->getFine(), //Multa para pagamento após o vencimento
                 //   "interest" => $cob->getInterest(),
@@ -118,7 +124,7 @@ class PedidoController extends Controller
                 "split" => $s,
             ),
         );
-      //  dd($s);
+        //  dd($s);
 
         $usuario = Usuario::find($usuario);
         $enderecohasusuario = DB::table('usuarios_has_enderecos')->where('usuario_id', $usuario->id)->get();
@@ -127,7 +133,7 @@ class PedidoController extends Controller
 
         $billing = array(
             "billing" => array(
-                "name" =>$usuario->nome ." ". $usuario->sobrenome,
+                "name" => $usuario->nome . " " . $usuario->sobrenome,
                 "document" => $this->limparCaracteres($usuario->cpf),
                 "email" => $usuario->email,
                 "address" => array(
@@ -143,7 +149,7 @@ class PedidoController extends Controller
             )
         );
         $data = array_merge($charge, $billing);
-       // dd($data);
+        // dd($data);
         $data = json_encode($data);
 
         //Requisição para obter o JWT
@@ -160,7 +166,25 @@ class PedidoController extends Controller
 
         ]);
         $cobranca = json_decode(curl_exec($ch));
-        dd($cobranca);
+        $array = $cobranca->_embedded->charges;
+        $cobrancaModel = new Cobranca();
+
+        foreach ($array as $cob) {
+
+            $cobrancaModel->idCobranca = $cob->id;
+            $cobrancaModel->pedido = $uuid;
+            $cobrancaModel->code = $cob->code;
+            $cobrancaModel->reference = $cob->reference;
+            $cobrancaModel->dueDate = $cob->dueDate;
+            $cobrancaModel->checkoutUrl = $cob->checkoutUrl;
+            $cobrancaModel->amount = $cob->amount;
+            $cobrancaModel->status = $cob->status;
+            $cobrancaModel->link = $cob->_links->self->href;
+            $cobrancaModel->save();
+
+
+        }
+
         return response()->json(['message' => $msg], 201);
     }
 
