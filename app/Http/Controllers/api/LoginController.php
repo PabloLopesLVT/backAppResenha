@@ -24,6 +24,7 @@ class LoginController extends Controller
         $resposta['name'] = $usuario->name;
         $resposta['email'] = $usuario->email;
         $resposta['token'] = $usuario->createToken('token')->accessToken;
+
         return response()->json($resposta, 200);
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Endereco;
 use App\Models\GatewayPagamento;
+use App\Models\Pedido;
 use App\Models\TokenCartao;
 use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Model;
@@ -126,10 +127,21 @@ class PagamentoController extends Controller
             "X-Api-Version:  2",
             "X-Resource-Token:  {$this->getToken()}",
             "Authorization: Bearer {$gateway->getToken()}",
-
         ]);
+
         $ch = json_decode(curl_exec($ch));
+
+
+
         if(!isset($ch->status)){
+            $cobrancaTable = DB::table('cobrancas')->where('idCobranca', $request->input('chargeId'))->get();
+            $pedidoTable = DB::table('pedidos')->where('identificacao_pedido', $cobrancaTable[0]->pedido)->get();
+            foreach ($pedidoTable as $p){
+                $pedido = Pedido::find($p->id);
+                $pedido->pago = 1;
+                $pedido->update();
+            }
+
             return response()->json(['message'=> "Pagamento efetuado com sucesso!"], 200);
         }else{
             return response()->json(['message'=> $ch], 404);

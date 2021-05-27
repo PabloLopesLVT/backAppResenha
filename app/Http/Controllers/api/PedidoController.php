@@ -167,7 +167,7 @@ class PedidoController extends Controller
 
         ]);
         $cobranca = json_decode(curl_exec($ch));
-        dd($cobranca);
+
         $array = $cobranca->_embedded->charges;
         $cobrancaModel = new Cobranca();
 

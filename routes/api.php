@@ -36,14 +36,6 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('/logout', [LoginController::class, 'logout']);
 
 
-
-
-
-//Deletar
-
-//Produtos - Empresa
-
-
 });
 Route::post('/tokenizar', [App\Http\Controllers\PagamentoController::class, 'tokenizar']);
 Route::post('/efetuar-pagamento', [App\Http\Controllers\PagamentoController::class, 'efetuarPagamento']);

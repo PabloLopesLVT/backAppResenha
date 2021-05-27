@@ -20,6 +20,7 @@ class CreatePedidos extends Migration
             $table->unsignedBigInteger('empresa_id');
             $table->unsignedBigInteger('usuario_id');
             $table->decimal('valor');
+            $table->tinyinteger('pago');
             $table->char('status', 1);
             $table->integer('quantidade');
             $table->timestamps();

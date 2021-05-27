@@ -17,6 +17,7 @@ class Pedido extends Model
         'usuario_id',
         'valor',
         'status',
+        'pago',
         'quantidade',
         'identificacao_pedido'
     ];
